@@ -1,3 +1,3 @@
 # Borza
 
-![Er diagram](ER diagram.png)
+![Er diagram](ERdiagram.png)
