@@ -1,3 +1,3 @@
 # Borza
 
-[]! 'ER diagram.png'
+[](ER diagram.png)
