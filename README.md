@@ -1,2 +1,3 @@
 # Borza
 
+[]! 'ER diagram.png'
