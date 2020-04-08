@@ -1,6 +1,6 @@
 # Borza
 
-Ideja našega projekta je ustvariti virtualno borzo skupaj s spletno aplikacijo.
+V našem projektu bomo naredili podatkovno bazo za virtualno borzo skupaj z spletno aplikacijo. 
 
 
 ![Er diagram](ERdiagram.png)
