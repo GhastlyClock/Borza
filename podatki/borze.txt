@@ -1,0 +1,19 @@
+oznaka,ime,regija
+NYSE,New York Stock Exchange,USA
+NASDAQ,Nasdaq,USA
+JPX,Japan Exchange Group,Japan
+LSE,London Stock Exchange,UK
+SSE,Shanghai Stock Exchange,China
+SEHK,Hong Kong Stock Exchange, Hong Kong
+EEA,Euronext,European Union
+SZSE,Shenzen Stock Exchange,China
+TSX,TMX Group,Canada
+BSE,Bombay Stock Exchange,India
+ASX,Australian Securities Exchange,Australia
+KRX,Korea Exchange,South Korea
+VSE,Vilnius Stock Exchange,Lithuania
+ICEX,Iceland Stock Exchange,Iceland
+AMX,Armenia Securities Exchange,Armenia
+TWSE, Taiwan Stock Exchange, Taiwan
+MISX,Moscow Exchange,Russia
+BME,Bolsas y Mercados Espanoles,Spain
