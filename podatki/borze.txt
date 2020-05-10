@@ -17,3 +17,24 @@ AMX,Armenia Securities Exchange,Armenia
 TWSE, Taiwan Stock Exchange, Taiwan
 MISX,Moscow Exchange,Russia
 BME,Bolsas y Mercados Espanoles,Spain
+
+
+
+INSERT INTO BORZE VALUES('NYSE','New York Stock Exchange','USA');
+INSERT INTO BORZE VALUES('NASDAQ','Nasdaq','USA');
+INSERT INTO BORZE VALUES('JPX','Japan Exchange Group','Japan');
+INSERT INTO BORZE VALUES('LSE','London Stock Exchange','UK');
+INSERT INTO BORZE VALUES('SSE','Shanghai Stock Exchange','China');
+INSERT INTO BORZE VALUES('SEHK','Hong Kong Stock Exchange','Hong Kong');
+INSERT INTO BORZE VALUES('EEA','Euronext','European Union');
+INSERT INTO BORZE VALUES('SZSE','Shenzen Stock Exchange','China');
+INSERT INTO BORZE VALUES('TSX','TMX Group','Canada');
+INSERT INTO BORZE VALUES('BSE','Bombay Stock Exchange','India');
+INSERT INTO BORZE VALUES('ASX','Australian Securities Exchange','Australia');
+INSERT INTO BORZE VALUES('KRX','Korea Exchange','South Korea');
+INSERT INTO BORZE VALUES('VSE','Vilnius Stock Exchange','Lithuania');
+INSERT INTO BORZE VALUES('ICEX','Iceland Stock Exchange','Iceland');
+INSERT INTO BORZE VALUES('AMX','Armenia Securities Exchange','Armenia');
+INSERT INTO BORZE VALUES('TWSE','Taiwan Stock Exchange','Taiwan');
+INSERT INTO BORZE VALUES('MISX','Moscow Exchange','Russia');
+INSERT INTO BORZE VALUES('BME','Bolsas y Mercados Espanoles','Spain');
