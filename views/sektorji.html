@@ -1,0 +1,15 @@
+% rebase base.html
+
+
+<table cellpadding="0" cellspacing="0" border="1">
+<tr>
+    <th>Ime sektorja</th>
+    <th>Vrednost v milijardah EUR</th>
+</tr>
+% for oznaka, ime,cena in sektorji:
+<tr>
+    <th><a href='/sektorji/{{oznaka}}'>{{ime}}</th>
+    <th>{{cena}}</th>
+</tr>
+% end
+</table>

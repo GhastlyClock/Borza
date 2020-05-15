@@ -1,0 +1,12 @@
+%rebase base.html
+
+
+
+
+{{id}}{{ime}}{{priimek}}{{drzava}}{{racun}}
+
+
+%for id,znesek,uporabnik,oznaka,tip,kolicina in trans:
+<h1>{{id}}</h1>,<h1>{{znesek}}</h1>,<h1>{{uporabnik}}</h1>,<h1>{{oznaka}}</h1>,<h1>{{tip}},{{kolicina}}</h1>
+
+%end

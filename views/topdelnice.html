@@ -1,22 +1,30 @@
 % rebase base.html
 
-<h1>Vse delnice, ki so na borzi {{oznaka}}:
+<h1> Top 20 delnic na voljo</h1>
 <table cellpadding="0" cellspacing="0" border="1">
 <tr>
     <th>Oznaka</th>
-    <th>Ime</th>
+    <th>Ime podjetja</th>
     <th>Cena v EUR</th>
+    <th>Borza</th>
     <th>Sektor</th>
-    <th>Količina</th>
+    <th>Kolicina</th>
 </tr>
-%for oznaka, ime, cena, sektor, kolicina in delnice:
+%for oznaka,ime,cena,borza,sektor,kolicina in delnice:
 <tr>
     <th>{{oznaka}}</th>
     <th>{{ime}}</th>
     <th>{{cena}}</th>
+    <th>{{borza}}</th>
     <th>{{sektor}}</th>
     <th>{{kolicina}}</th>
 </tr>
 %end
 </table>
-<h2> Skupna vrednost vseh delnic na tej borzi je {{vrednost}} EUR.</h2>
+
+
+
+
+
+
+
