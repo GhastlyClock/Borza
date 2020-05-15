@@ -6,7 +6,7 @@
         {
             "label": "Python2",
             "type": "shell",
-            "command": "python -i \\\\\"${file}\\\\\"",
+            "command": "python -i \\\"${file}\\\"",
         }
     ]
 }
