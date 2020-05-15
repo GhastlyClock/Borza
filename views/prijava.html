@@ -1,4 +1,33 @@
-%rebase base.html
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <link rel="stylesheet" type="text/css"  href="/static/main.css">
+    <meta charset='utf8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <header id='header'>
+      <a class="logo" href='/zacetna_stran/'>Domov</a>
+      <nav>
+        <a href="/borze/">Borze</a>
+        <a href="/sektorji/">Sektorji</a>
+        <a href="/topdelnice/"> Top delnice</a>
+        %if stanje == 0:
+        <a href="/prijava/">Prijava</a>
+        <a href="/registracija/">Registracija</a>
+        %end 
+        %if stanje != 0:
+        <a href="/odjava/">Odjava</a>
+        %end
+      </nav>
+      </header>
+    </div>
+    </head>
+
+    <body>
+      <link rel="stylesheet" type="text/css"  href="/static/main.css">
+
+    </body>
+
 
 <div align="center">
 <form action='/prijava/' class="form-signin text-center" method='post' style="width: 30%;margin-top: 5cm">
@@ -14,3 +43,4 @@
     %end    
 </form>
 </div>
+</html>

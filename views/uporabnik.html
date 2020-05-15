@@ -1,4 +1,32 @@
-%rebase base.html
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <link rel="stylesheet" type="text/css"  href="/static/main.css">
+    <meta charset='utf8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <header id='header'>
+      <a class="logo" href='/zacetna_stran/'>Domov</a>
+      <nav>
+        <a href="/borze/">Borze</a>
+        <a href="/sektorji/">Sektorji</a>
+        <a href="/topdelnice/"> Top delnice</a>
+        %if stanje == 0:
+        <a href="/prijava/">Prijava</a>
+        <a href="/registracija/">Registracija</a>
+        %end 
+        %if stanje != 0:
+        <a href="/odjava/">Odjava</a>
+        %end
+      </nav>
+      </header>
+    </div>
+    </head>
+
+    <body>
+      <link rel="stylesheet" type="text/css"  href="/static/main.css">
+
+    </body>
 
 
 
@@ -10,3 +38,4 @@
 <h1>{{id}}</h1>,<h1>{{znesek}}</h1>,<h1>{{uporabnik}}</h1>,<h1>{{oznaka}}</h1>,<h1>{{tip}},{{kolicina}}</h1>
 
 %end
+</html>

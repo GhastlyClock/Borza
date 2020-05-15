@@ -7,6 +7,8 @@ psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo prob
 
 debug(True)
 
+stanje = 1
+
 #Popravek problema, ko bottle ne najde templatea
 def bottle_monkeypatch():
     """
@@ -33,16 +35,16 @@ def static(filename):
 
 @get('/')
 def index():
-    return template('zacetna_stran.html')
+    return template('zacetna_stran.html', stanje = stanje)
 
 @get('/zacetna_stran/')
 def zacetna_get():
-    return template('zacetna_stran.html')
+    return template('zacetna_stran.html', stanje = stanje)
 
 @get('/borze/')
 def borze():
     cur.execute("""SELECT * FROM BORZE""")
-    return template('borze.html', borze=cur)
+    return template('borze.html', borze=cur, stanje = stanje)
 
 @get('/borze/<oznaka>')
 def borza(oznaka):
@@ -50,14 +52,14 @@ def borza(oznaka):
     cur.execute(ukaz,(oznaka, ))
     vrednost= izracun(cur)
     cur.execute(ukaz,(oznaka, ))
-    return template('borze_podrobno.html', delnice=cur, oznaka=oznaka, vrednost=vrednost)
+    return template('borze_podrobno.html', delnice=cur, oznaka=oznaka, vrednost=vrednost, stanje = stanje)
 
 
 
 @get('/sektorji/')
 def sektorji():
     cur.execute("SELECT id,ime_sektorja,cena_mrd FROM SEKTOR")
-    return template('sektorji.html', sektorji=cur)
+    return template('sektorji.html', sektorji=cur, stanje = stanje)
 
 @get('/sektorji/<oznaka>')
 def sektor(oznaka):
@@ -65,33 +67,25 @@ def sektor(oznaka):
     cur.execute(ukaz,(oznaka, ))
     vrednost = izracun(cur)
     cur.execute(ukaz,(oznaka, ))
-    return template('sektor_podrobno.html',sektor=cur,oznaka=oznaka, vrednost=vrednost)
+    return template('sektor_podrobno.html',sektor=cur,oznaka=oznaka, vrednost=vrednost, stanje = stanje)
 
 @get('/topdelnice/')
 def delnice():
     cur.execute('SELECT * FROM DELNICE ORDER BY cena DESC LIMIT 20')
-    return template('topdelnice.html', delnice=cur)
+    return template('topdelnice.html', delnice=cur, stanje = stanje)
+
+@get('/odjava/')
+def odjava():
+    global stanje
+    stanje = 0
+    return template('zacetna_stran.html', stanje = stanje)
 
 @get('/prijava/')
 def prijava():
     napaka = 0
-    return template('prijava.html', napaka=napaka)
+    return template('prijava.html', napaka=napaka, stanje = stanje)
 
-#def preveri_uporabnika(ime,geslo):
-#    try:
-#        ukaz = ("SELECT mail FROM PRIJAVA WHERE geslo = (%s)")
-#        cur.execute(ukaz,(geslo, ))
-#        for mail in cur:
-#            if mail == ime:
-#                napaka = 0
-#                return template('uporabnik.html', uporabnik=ime)
-#            else:
-#                napaka = 1
-#                return template('prijava.html',napaka=napaka, problem=cur)
-#    except:
-#        print (1)
-#        napaka = 2
-#        return template('prijava.html',napaka=napaka, problem=cur)
+
 
 def preveri_uporabnika(ime,geslo):
     ukaz = ("SELECT mail FROM PRIJAVA WHERE geslo = (%s)")
@@ -121,13 +115,15 @@ def prijavljanje():
             racun = e
         ukaz3 = ("SELECT * FROM TRANSAKCIJE WHERE uporabnik = (%s)")
         cur.execute(ukaz3,(racun, ))
-        return template('uporabnik.html', id = id, ime = ime, priimek=priimek, drzava = drzava, racun = racun, trans = cur)
+        global stanje 
+        stanje = id
+        return template('uporabnik.html', id = id, ime = ime, priimek=priimek, drzava = drzava, racun = racun, trans = cur, stanje = stanje)
     else:
-        return template('prijava.html', napaka = 1)
+        return template('prijava.html', napaka = 1, stanje = stanje)
 
 @get('/registracija/')
 def register():
-    return template('registracija.html')
+    return template('registracija.html', stanje = stanje)
 
 baza = psycopg2.connect(database=db, host=host, user=user, password=password)
 baza.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
