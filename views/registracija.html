@@ -16,6 +16,7 @@
         <a href="/registracija/">Registracija</a>
         %end 
         %if stanje != 0:
+        <a href="/uporabnik/{{stanje}}">Moj profil</a>
         <a href="/odjava/">Odjava</a>
         %end
       </nav>
@@ -25,10 +26,6 @@
 
     <body>
       <link rel="stylesheet" type="text/css"  href="/static/main.css">
-
-    </body>
-
-
 <div align="center">
 <h1> Še danes se pridružite buržoaziji in v enem tednu začnite živeti življenje, kot si ga zaslužite.</h1>
 <form action='/registracija/' class="form-signin text-center" method='post' style="width: 30%;margin-top: 5cm">
@@ -39,16 +36,47 @@
     <br>
     <span>Elektronski naslov:</span><input name='mail' type='text' />
     <br>
+    %if napaka == 2:
+    <h2> Uporabnik s tem elektronskim naslovom je že registriran. </h2>
+    %end
+    <br>
     <span>Država:</span><input name='drzava' type='text' />
     <br>
     <span>Številka trgovalnega računa:</span><input name='trr' type='text' />
+    <br>
+    %if napaka == 3:
+    <h2> Uporabnik s tem trgovalnim računom je že registriran.<h2>
+    %end
     <br>
     <span>Geslo:</span><input name='pass1' type='password' />
     <br>
     <span>Ponovite geslo:</span><input name='pass2' type='password' />
     <br>
+    %if napaka == 4:
+    <h2> Gesli se ne ujemata. </h2>      
+    %end
+    %if napaka == 5:
+    <h2> Geslo je prekratko.
+    %end
+    %if napaka == 1:
+    <h2> Izpolnite vsa polja.</h2>
+    %end
+    <br>
     <input value='Registracija' type='submit' />
     </div> 
 </form>
 </div>
+    </body>
+
+
+
+<footer id = "footer">
+  <div class="inner">
+    <div class="content">
+    <section> Random1</section>
+    <section> random2</section>
+    <section> ranom3 </section>
+    </div>
+  </div>
+</footer>
 </html>

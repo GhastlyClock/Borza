@@ -16,6 +16,7 @@
         <a href="/registracija/">Registracija</a>
         %end 
         %if stanje != 0:
+        <a href="/uporabnik/{{stanje}}">Moj profil</a>
         <a href="/odjava/">Odjava</a>
         %end
       </nav>
@@ -25,8 +26,6 @@
 
     <body>
       <link rel="stylesheet" type="text/css"  href="/static/main.css">
-
-    </body>
 
 
 <table cellpadding="0" cellspacing="0" border="1">
@@ -41,4 +40,15 @@
 </tr>
 % end
 </table>
+    </body>
+
+<footer id = "footer">
+  <div class="inner">
+    <div class="content">
+    <section> Random1</section>
+    <section> random2</section>
+    <section> ranom3 </section>
+    </div>
+  </div>
+</footer>
 </html>

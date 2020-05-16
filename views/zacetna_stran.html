@@ -11,13 +11,14 @@
         <a href="/borze/">Borze</a>
         <a href="/sektorji/">Sektorji</a>
         <a href="/topdelnice/"> Top delnice</a>
-%if stanje == 0:
+        %if stanje == 0:
         <a href="/prijava/">Prijava</a>
         <a href="/registracija/">Registracija</a>
-%end 
-%if stanje != 0:
+        %end 
+        %if stanje != 0:
+        <a href="/uporabnik/{{stanje}}">Moj profil</a>
         <a href="/odjava/">Odjava</a>
-%end
+        %end
       </nav>
       </header>
     </div>
@@ -25,8 +26,6 @@
 
     <body>
       <link rel="stylesheet" type="text/css"  href="/static/main.css">
-
-    </body>
 
 
 <section id="banner">
@@ -36,5 +35,16 @@
     <a href='/registracija/'><button>Pridruži se buržoaziji</button></a>
 </div>
 
+    </body>
+
 </section>
+<footer id = "footer">
+  <div class="inner">
+    <div class="content">
+    <section> Random1</section>
+    <section> random2</section>
+    <section> ranom3 </section>
+    </div>
+  </div>
+</footer>
 </html>

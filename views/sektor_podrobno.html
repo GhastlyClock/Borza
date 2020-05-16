@@ -16,6 +16,7 @@
         <a href="/registracija/">Registracija</a>
         %end 
         %if stanje != 0:
+        <a href="/uporabnik/{{stanje}}">Moj profil</a>
         <a href="/odjava/">Odjava</a>
         %end
       </nav>
@@ -25,8 +26,6 @@
 
     <body>
       <link rel="stylesheet" type="text/css"  href="/static/main.css">
-
-    </body>
 
 <h1>Vse delnice, ki so na iz sektroja {{oznaka}}:
 <table cellpadding="0" cellspacing="0" border="1">
@@ -48,4 +47,15 @@
 %end
 </table>
 <h1> Skupna vrednost vseh delnic v tem sektorju je {{vrednost}} EUR.</h1>
+    </body>
+
+<footer id = "footer">
+  <div class="inner">
+    <div class="content">
+    <section> Random1</section>
+    <section> random2</section>
+    <section> ranom3 </section>
+    </div>
+  </div>
+</footer>
 </hmtl>

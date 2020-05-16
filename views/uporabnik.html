@@ -16,6 +16,7 @@
         <a href="/registracija/">Registracija</a>
         %end 
         %if stanje != 0:
+        <a href="/uporabnik/{{stanje}}">Moj profil</a>
         <a href="/odjava/">Odjava</a>
         %end
       </nav>
@@ -25,17 +26,71 @@
 
     <body>
       <link rel="stylesheet" type="text/css"  href="/static/main.css">
-
-    </body>
-
-
-
-
-{{id}}{{ime}}{{priimek}}{{drzava}}{{racun}}
-
-
-%for id,znesek,uporabnik,oznaka,tip,kolicina in trans:
-<h1>{{id}}</h1>,<h1>{{znesek}}</h1>,<h1>{{uporabnik}}</h1>,<h1>{{oznaka}}</h1>,<h1>{{tip}},{{kolicina}}</h1>
-
+<h1>Pozdravljeni {{ime}} {{priimek}}.</h1>
+<div class="highlights">
+  <div class="content">
+  <header>
+  <h3><a href="/uporabnik/{{stanje}}/denar/" >S klikom naložite ali dvignite denar </h3>
+  </div>
+  <div class="content">
+  <h3><a href "/uporabnik/{{stanje}}/trgovanje/">Trgujte z delnicami </h3>
+</div>
+</div>
+%if trans == []:
+  
+  <h5> Naložite denar in začnite trgovati </h5>
 %end
+%if trans != []:
+<h2> Vaše stanje na računu je {{vrednost}} EUR</h2>
+<div align="left">
+<h5> Vaše transakcije na računu </h5>
+<table>
+<tr>
+  <th> ID </th>
+  <th> Znesek </th>
+%for id,znesek,uporabnik,oznaka,kolicina,tip in trans:
+<tr>
+<th>{{id}}</th>
+<th>{{znesek}} EUR</th>
+</tr>
+%end
+%end
+</table>
+</div>
+%if trans_delnice == []:
+  <h5> Začnite trgovati z delnicami! </h5>
+%end
+%if trans_delnice != []:
+<div align="left">
+<h5> Vaše operacije z delnicami </h5>
+<table>
+<tr>
+  <th> Oznaka delnice </th>
+  <th> Kolicina </th>
+  <th> Znesek </th>
+</tr>
+
+%for id,znesek,uporabnik,oznaka,kolicina,tip in trans_delnice:
+<tr>
+  <th> {{oznaka}} </th>
+  <th> {{kolicina}} </th>
+  <th> {{znesek}} </th>
+</tr>
+%end
+%end
+</table>
+</div>
+
+</body>
+
+
+<footer id = "footer">
+  <div class="inner">
+    <div class="content">
+    <section> Random1</section>
+    <section> random2</section>
+    <section> ranom3 </section>
+    </div>
+  </div>
+</footer>
 </html>
