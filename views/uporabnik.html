@@ -16,7 +16,7 @@
         <a href="/registracija/">Registracija</a>
         %end 
         %if stanje != 0:
-        <a href="/uporabnik/{{stanje}}">Moj profil</a>
+        <a href="/uporabnik/{{stanje}}/">Moj profil</a>
         <a href="/odjava/">Odjava</a>
         %end
       </nav>
@@ -30,10 +30,10 @@
 <div class="highlights">
   <div class="content">
   <header>
-  <h3><a href="/uporabnik/{{stanje}}/denar/" >S klikom naložite ali dvignite denar </h3>
+  <h3><a href="/uporabnik/{{stanje}}/denar/" >S klikom naložite ali dvignite denar</a> </h3>
   </div>
   <div class="content">
-  <h3><a href "/uporabnik/{{stanje}}/trgovanje/">Trgujte z delnicami </h3>
+  <h3><a href="/uporabnik/{{stanje}}/trgovanje/">Trgujte z delnicami</a> </h3>
 </div>
 </div>
 %if trans == []:
@@ -74,7 +74,7 @@
 <tr>
   <th> {{oznaka}} </th>
   <th> {{kolicina}} </th>
-  <th> {{znesek}} </th>
+  <th> {{znesek}} EUR</th>
 </tr>
 %end
 %end

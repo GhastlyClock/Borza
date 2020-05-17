@@ -23,27 +23,47 @@
       </header>
     </div>
     </head>
-
-    <body>
-      <link rel="stylesheet" type="text/css"  href="/static/main.css">
-
-<div align="center">
-<form action='/prijava/' class="form-signin text-center" method='post' style="width: 30%;margin-top: 5cm">
+<body>
+<h1> Delnica podjetja {{ime}} ima trenutno ceno {{cena}} EUR.</h1>
+<h2> V lasti imate {{kolicina2}} delnic tega podjetja, na voljo jih je še {{kolicina1}}.</h2>
+<form action="/uporabnik/{{stanje}}/trgovanje/{{oznaka}}/" method="post" style="width: 30%;margin-top: 5cm">
+%if napaka == 1:
+    <h3>Neveljaven vnos žejene količine delnic</h3>
+%end
+%if napaka == 3:
+    <h3> Na enkrat ni mogoče izvesti nakupa in prodaje iste delnice. </h3>
+%end
+<div  class="center">
+    <div align="left">
     <div class="h3 mb-3 font-weight-normal">
-    <span>Elektronski naslov:</span><input name='mail' type='text' />
+    <span>Število delnic, ki jih želite kupiti</span>
     <br>
-    <span>Geslo:</span><input name='geslo' type='password' />
+    <input name='kolicina1' type='integer' value = '0'/> 
     <br>
-    <input value='Prijava' type='submit' />
+    
     </div>
-    %if napaka == 1:
-    <h3> Napačen elektronski naslov ali geslo, poiskusite še enkrat</h3>
-    %end    
-</form>
+    </div>
+
 </div>
-    </body>
+<div align='right'>
+<div class="h3 mb-3 font-weight-normal">
+<span>Število delnic, ki jih želite prodati</span>
+<br>
+<input name='kolicina2' type='integer' value = '0' /> 
+<br>
+</div>
+</div>
+<div align ="center">
 
+%if napaka == 2:
+<h5> Geslo ni pravilo </h5>
+%end
+<span>Geslo:</span>
+<input name='geslo' type='password' />
+<input type='submit'  value='Potrdi'/>
 
+</form>
+</body>
 <footer id = "footer">
   <div class="inner">
     <div class="content">
@@ -53,4 +73,5 @@
     </div>
   </div>
 </footer>
+</html>
 </html>

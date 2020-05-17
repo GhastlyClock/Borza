@@ -16,7 +16,7 @@
         <a href="/registracija/">Registracija</a>
         %end 
         %if stanje != 0:
-        <a href="/uporabnik/{{stanje}}">Moj profil</a>
+        <a href="/uporabnik/{{stanje}}/">Moj profil</a>
         <a href="/odjava/">Odjava</a>
         %end
       </nav>
@@ -37,15 +37,21 @@
     <th>Borza</th>
     <th>Sektor</th>
     <th>Kolicina</th>
+    %if stanje != 0:
+    <th> Kupi ali prodaj delnico</th>
+    %end
 </tr>
 %for oznaka,ime,cena,borza,sektor,kolicina in delnice:
 <tr>
     <th>{{oznaka}}</th>
     <th>{{ime}}</th>
     <th>{{cena}}</th>
-    <th>{{borza}}</th>
-    <th>{{sektor}}</th>
+    <th><a href="/borze/{{borza}}">{{borza}}</a></th>
+    <th><a href="/sektorji/{{sektor}}">{{sektor}}</a></th>
     <th>{{kolicina}}</th>
+    %if stanje != 0:
+    <th><a href="/uporabnik/{{stanje}}/trgovanje/{{oznaka}}/">Kupi/Prodaj</a></th>
+    %end
 </tr>
 %end
 </table>

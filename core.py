@@ -114,8 +114,8 @@ def prijavljanje():
             uid = id[0]
         global stanje 
         stanje = uid
-        string = '/uporabnik/{0}'.format(stanje)
-        print(stanje)
+        string = '/uporabnik/{0}/'.format(stanje)
+
         redirect(string)
 #        return template('uporabnik.html', id = id, ime = ime, priimek=priimek, drzava = drzava, racun = racun, trans = cur, stanje = stanje)
     else:
@@ -141,7 +141,7 @@ def register():
 #    cur.execute(ukaz3,(racun, ))
     
 
-@get('/uporabnik/<stanje>')
+@get('/uporabnik/<stanje>/')
 def uporabnik(stanje):
     ukaz2 = ("SELECT * FROM UPORABNIK WHERE id = (%s)")
     cur.execute(ukaz2,(stanje, ))
@@ -151,7 +151,7 @@ def uporabnik(stanje):
         priimek = c
         drzava = d
         racun = e
-    ukaz4 = ("SELECT SUM(znesek) FROM TRANSAKCIJE WHERE uporabnik = (%s) AND TIP = 0")
+    ukaz4 = ("SELECT SUM(znesek) FROM TRANSAKCIJE WHERE uporabnik = (%s)")
     cur.execute(ukaz4, (racun, ))
     for x in cur:
         vrednost = x[0]
@@ -161,7 +161,6 @@ def uporabnik(stanje):
     ukaz5 = ("SELECT * FROM TRANSAKCIJE WHERE uporabnik = (%s) AND TIP = 1 ORDER BY id DESC LIMIT 20")
     cur.execute(ukaz5,(racun, ))
     trans_delnice = cur.fetchall()
-    print(trans_delnice)
     return template('uporabnik.html', stanje = stanje, id=a, ime=b, priimek = c, drzava = d, racun  =e, trans=trans, vrednost = vrednost, trans_delnice = trans_delnice)
 
 
@@ -215,22 +214,152 @@ def doloci_racun(st):
     racun = cur.fetchone()
     return racun[0]
 
+def doloci_geslo(st):
+    ukaz = ("SELECT geslo FROM PRIJAVA WHERE id = (%s)")
+    cur.execute(ukaz,(st, ))
+    geslo = cur.fetchone()
+    return geslo[0]
 
+def stanje_racun(st):
+    racun = doloci_racun(st)
+    ukaz4 = ("SELECT SUM(znesek) FROM TRANSAKCIJE WHERE uporabnik = (%s)")
+    cur.execute(ukaz4, (racun, ))
+    vrednost = cur.fetchone()
+    return vrednost[0]
 
 
 @get('/uporabnik/<stanje>/denar/')
 def denar(stanje):
-    racun = doloci_racun(stanje)
-    ukaz4 = ("SELECT SUM(znesek) FROM TRANSAKCIJE WHERE uporabnik = (%s) AND TIP = 0")
-    cur.execute(ukaz4, (racun, ))
-    for x in cur:
-        vrednost = x[0]
-    return template('denar.html', vrednost = vrednost)
+    vrednost = stanje_racun(stanje)
+    return template('denar.html', vrednost = vrednost, stanje = stanje, napaka = 0)
 
-@post('/uporabniki/<stanje>/denar/')
+@post('/uporabnik/<stanje>/denar/')
 def denarovanje(stanje):
-    return
+    vrednost = stanje_racun(stanje)
+    try:
+        dvig = int(request.forms.get('kolicina1'))
+        polog = int(request.forms.get('kolicina2'))
+        if dvig == 0 and polog == 0:
+            return template('denar.html', vrednost = vrednost, stanje = stanje, napaka = 2)
+    except:
+        return template('denar.html', vrednost = vrednost, stanje = stanje, napaka = 2)
+    znesek = polog - dvig
+    prob  = vrednost + znesek
+    if prob < 0:
+        return template('denar.html', vrednost = vrednost, stanje=stanje, napaka=4, prob = prob)
+    geslo = request.forms.get('geslo')
+    if geslo != doloci_geslo(stanje):
+        return template('denar.html', vrednost = vrednost, stanje = stanje, napaka = 1)
+    cur.execute("SELECT nextval('trans_id')")
+    trid = cur.fetchone()
+    print(trid)
+    ukaz = ('INSERT INTO TRANSAKCIJE(id,znesek,uporabnik,tip) VALUES ((%s), (%s), (%s), 0)')
+    cur.execute(ukaz, (trid[0], znesek, doloci_racun(stanje)))
+    redirect ('/uporabnik/{0}'.format(stanje))
 
+def vredost_delnic(st):
+    ukaz = ("SELECT oznaka, sum(kolicina) FROM TRANSAKCIJE WHERE uporabnik = (%s) AND tip = 1 GROUP BY oznaka")
+    racun = doloci_racun(st)
+    vrednost = 0
+    cur.execute(ukaz, (racun, ))
+    delnice = cur.fetchall()
+    for oznaka, kolicina in delnice:
+        ukaz = ("SELECT cena FROM DELNICE where oznaka = (%s)")
+        cur.execute(ukaz,(oznaka, ))
+        cena  = cur.fetchone()
+        vrednost += cena[0]*kolicina
+    return vrednost
+
+@get('/uporabnik/<stanje>/trgovanje/')
+def pregled_delnic(stanje):
+    ukaz = ("SELECT oznaka, sum(kolicina) FROM TRANSAKCIJE WHERE uporabnik = (%s) AND tip = 1 GROUP BY oznaka")
+    racun = doloci_racun(stanje)
+    cur.execute(ukaz, (racun, ))
+    delnice = cur.fetchall()
+    vrednost_portfelja = vredost_delnic(stanje)
+    cur.execute("SELECT * FROM DELNICE")
+    return template('delnice.html', stanje = stanje, delnice = delnice, vrednost_portfelja = vrednost_portfelja, vse = cur)
+
+@get('/uporabnik/<stanje>/trgovanje/<oznaka>/')
+def trgovanje(stanje, oznaka):
+    ukaz =("SELECT cena,kolicina,ime FROM DELNICE where oznaka = (%s)")
+    cur.execute(ukaz,(oznaka, ))
+    podatek = cur.fetchone()
+    cena = podatek[0]
+    kolicina_na_voljo = podatek[1]
+    ime = podatek[2]
+    ukaz = ("SELECT sum(kolicina) FROM TRANSAKCIJE WHERE uporabnik = (%s) AND tip = 1 AND oznaka = (%s) GROUP BY oznaka")
+    racun = doloci_racun(stanje)
+    try:
+        cur.execute(ukaz,(racun, oznaka))
+        podatek = cur.fetchone()
+        lastna_kolicina = podatek[0]
+    except:
+        lastna_kolicina = 0
+    return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 0)
+
+     
+
+@post('/uporabnik/<stanje>/trgovanje/<oznaka>/')
+def trg(stanje, oznaka):
+    vrednost = stanje_racun(stanje)
+    stanje_na_racunu = stanje_racun(stanje)
+    ukaz =("SELECT cena,kolicina,ime FROM DELNICE where oznaka = (%s)")
+    cur.execute(ukaz,(oznaka, ))
+    podatek = cur.fetchone()
+    cena = podatek[0]
+    kolicina_na_voljo = podatek[1]
+    ime = podatek[2]
+    ukaz = ("SELECT sum(kolicina) FROM TRANSAKCIJE WHERE uporabnik = (%s) AND tip = 1 AND oznaka = (%s) GROUP BY oznaka")
+    racun = doloci_racun(stanje)
+    try:
+        cur.execute(ukaz,(racun, oznaka))
+        podatek = cur.fetchone()
+        lastna_kolicina = podatek[0]
+    except:
+        lastna_kolicina = 0
+    geslo = request.forms.get('geslo')
+    try:
+        kolicina1 = int(request.forms.get('kolicina1'))
+        kolicina2 = int(request.forms.get('kolicina2'))
+        prodajna_kolicina = -kolicina2
+    except:
+        return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
+    if kolicina1 == 0 and kolicina2 == 0:
+        return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
+
+    if kolicina1 != 0 and kolicina2 != 0:
+        return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 3)
+
+    if geslo != doloci_geslo(stanje):
+        return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 2)
+
+    
+
+    if kolicina1 == 0 and lastna_kolicina + prodajna_kolicina >= 0:
+        cur.execute("SELECT nextval('trans_id')")
+        trid = cur.fetchone()
+        ukaz = ('INSERT INTO TRANSAKCIJE(id,znesek,uporabnik,oznaka,kolicina,tip) VALUES ((%s), (%s), (%s), (%s), (%s), 1)')
+        cur.execute(ukaz,(trid[0],-prodajna_kolicina*cena,doloci_racun(stanje),oznaka, prodajna_kolicina, ))
+        string = '/uporabnik/{0}/'.format(stanje)
+        redirect(string)
+
+    if kolicina1 == 0 and lastna_kolicina + prodajna_kolicina < 0:
+        return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
+    
+    if kolicina2 == 0 and kolicina_na_voljo - kolicina1 >= 0:
+        if stanje_na_racunu - cena*kolicina1 < 0:
+            return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
+        cur.execute("SELECT nextval('trans_id')")
+        trid = cur.fetchone()
+        ukaz = ('INSERT INTO TRANSAKCIJE(id,znesek,uporabnik,oznaka,kolicina,tip) VALUES ((%s), (%s), (%s), (%s), (%s), 1)')
+        cur.execute(ukaz,(trid[0], -kolicina1*cena, doloci_racun(stanje), oznaka, kolicina1, ))
+        string = '/uporabnik/{0}/'.format(stanje)
+        redirect(string)
+    if kolicina2 == 0 and kolicina_na_voljo - kolicina1 < 0:
+        return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
+
+    
 
 
 baza = psycopg2.connect(database=db, host=host, user=user, password=password)
