@@ -341,6 +341,9 @@ def trg(stanje, oznaka):
         trid = cur.fetchone()
         ukaz = ('INSERT INTO TRANSAKCIJE(id,znesek,uporabnik,oznaka,kolicina,tip) VALUES ((%s), (%s), (%s), (%s), (%s), 1)')
         cur.execute(ukaz,(trid[0],-prodajna_kolicina*cena,doloci_racun(stanje),oznaka, prodajna_kolicina, ))
+        ukaz = ('UPDATE delnice SET kolicina = (%s) WHERE oznaka = (%s)')
+        sprememba = kolicina_na_voljo + prodajna_kolicina
+        cur.execute(ukaz,(sprememba, oznaka, ))
         string = '/uporabnik/{0}/'.format(stanje)
         redirect(string)
 
@@ -354,6 +357,9 @@ def trg(stanje, oznaka):
         trid = cur.fetchone()
         ukaz = ('INSERT INTO TRANSAKCIJE(id,znesek,uporabnik,oznaka,kolicina,tip) VALUES ((%s), (%s), (%s), (%s), (%s), 1)')
         cur.execute(ukaz,(trid[0], -kolicina1*cena, doloci_racun(stanje), oznaka, kolicina1, ))
+        ukaz = ('UPDATE delnice SET kolicina = (%s) WHERE oznaka = (%s)')
+        sprememba = kolicina_na_voljo - kolicina1
+        cur.execute(ukaz,(sprememba, oznaka, ))
         string = '/uporabnik/{0}/'.format(stanje)
         redirect(string)
     if kolicina2 == 0 and kolicina_na_voljo - kolicina1 < 0:
