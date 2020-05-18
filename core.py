@@ -8,7 +8,18 @@ psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo prob
 
 debug(True)
 
-stanje = 0
+kodiranje = 'ključkiganihčenebougotovil'
+def id_uporabnik():
+    if request.get_cookie("id", secret = kodiranje)!= None:
+        piskotek = request.get_cookie("id", secret = kodiranje)
+        return int(piskotek) 
+    else:
+        return 0
+
+
+
+
+
 
 #Popravek problema, ko bottle ne najde templatea
 def bottle_monkeypatch():
@@ -36,19 +47,23 @@ def static(filename):
 
 @get('/')
 def index():
+    stanje = id_uporabnik()
     return template('zacetna_stran.html', stanje = stanje)
 
 @get('/zacetna_stran/')
 def zacetna_get():
+    stanje = id_uporabnik()
     return template('zacetna_stran.html', stanje = stanje)
 
 @get('/borze/')
 def borze():
+    stanje = id_uporabnik()
     cur.execute("""SELECT * FROM BORZE""")
     return template('borze.html', borze=cur, stanje = stanje)
 
 @get('/borze/<oznaka>')
 def borza(oznaka):
+    stanje = id_uporabnik()
     ukaz = ("SELECT oznaka,ime,cena,sektor,kolicina FROM DELNICE WHERE borza = (%s)")
     cur.execute(ukaz,(oznaka, ))
     vrednost= izracun(cur)
@@ -59,11 +74,13 @@ def borza(oznaka):
 
 @get('/sektorji/')
 def sektorji():
+    stanje = id_uporabnik()
     cur.execute("SELECT id,ime_sektorja,cena_mrd FROM SEKTOR")
     return template('sektorji.html', sektorji=cur, stanje = stanje)
 
 @get('/sektorji/<oznaka>')
 def sektor(oznaka):
+    stanje = id_uporabnik()
     ukaz=("SELECT oznaka,ime,cena,borza,kolicina FROM DELNICE WHERE sektor = (%s)")
     cur.execute(ukaz,(oznaka, ))
     vrednost = izracun(cur)
@@ -72,20 +89,25 @@ def sektor(oznaka):
 
 @get('/topdelnice/')
 def delnice():
+    stanje = id_uporabnik()
+    print(stanje)
     cur.execute('SELECT * FROM DELNICE ORDER BY cena DESC LIMIT 20')
     return template('topdelnice.html', delnice=cur, stanje = stanje)
 
 @get('/odjava/')
 def odjava():
-    global stanje
-    stanje = 0
+    response.delete_cookie("id", path='/')
+    print(request.get_cookie("id"))
+    print(id_uporabnik())
     redirect('/zacetna_stran/')
 
 @get('/prijava/')
 def prijava():
-    global stanje
+    stanje = id_uporabnik()
+    print(request.get_cookie("id"))
+    print(stanje)
     if stanje !=0:
-        redirect('/zacenta_stran/')
+        redirect('/zacetna_stran/')
     napaka = 0
     return template('prijava.html', napaka=napaka, stanje = stanje)
 
@@ -112,18 +134,16 @@ def prijavljanje():
         cur.execute(ukaz1, (geslo,ime, ))
         for id in cur:
             uid = id[0]
-        global stanje 
-        stanje = uid
-        string = '/uporabnik/{0}/'.format(stanje)
-
+        response.set_cookie("id",uid, path='/', secret = kodiranje)
+        string = '/uporabnik/{0}/'.format(uid)
         redirect(string)
 #        return template('uporabnik.html', id = id, ime = ime, priimek=priimek, drzava = drzava, racun = racun, trans = cur, stanje = stanje)
     else:
-        return template('prijava.html', napaka = 1, stanje = stanje)
+        return template('prijava.html', napaka = 1, stanje = uid)
 
 @get('/registracija/')
 def register():
-    global stanje 
+    stanje = id_uporabnik()
     if stanje !=0:
         redirect('/zacetna_stran/')
     return template('registracija.html', stanje = stanje, napaka = 0)
@@ -167,6 +187,7 @@ def uporabnik(stanje):
 
 @post('/registracija/')
 def registracija():
+    stanje = id_uporabnik()
     ime = request.forms.get('ime')
     priimek = request.forms.get('priimek')
     email = request.forms.get('mail')
@@ -235,7 +256,12 @@ def denar(stanje):
 
 @post('/uporabnik/<stanje>/denar/')
 def denarovanje(stanje):
-    vrednost = stanje_racun(stanje)
+    try:
+        vrednost = stanje_racun(stanje)
+        if vrednost == None:
+            vrednost = 0
+    except:
+        vrednost = 0
     try:
         dvig = int(request.forms.get('kolicina1'))
         polog = int(request.forms.get('kolicina2'))
@@ -255,7 +281,7 @@ def denarovanje(stanje):
     print(trid)
     ukaz = ('INSERT INTO TRANSAKCIJE(id,znesek,uporabnik,tip) VALUES ((%s), (%s), (%s), 0)')
     cur.execute(ukaz, (trid[0], znesek, doloci_racun(stanje)))
-    redirect ('/uporabnik/{0}'.format(stanje))
+    redirect ('/uporabnik/{0}/'.format(stanje))
 
 def vredost_delnic(st):
     ukaz = ("SELECT oznaka, sum(kolicina) FROM TRANSAKCIJE WHERE uporabnik = (%s) AND tip = 1 GROUP BY oznaka")
