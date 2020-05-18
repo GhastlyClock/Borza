@@ -1,6 +1,7 @@
 from bottle import *
 import requests
 from auth_public import *
+import random
 
 
 import psycopg2, psycopg2.extensions, psycopg2.extras
@@ -8,9 +9,9 @@ psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo prob
 
 debug(True)
 
-kodiranje = 'ključkiganihčenebougotovil'
+kodiranje = 'laqwXUtKfHTp1SSpnkSg7VbsJtCgYS89QnvE7PedkXqbE8pPj7VeRUwqdXu1Fr1kEkMzZQAaBR93PoGWks11alfe8y3CPSKh3mEQ'
 def id_uporabnik():
-    if request.get_cookie("id", secret = kodiranje)!= None:
+    if request.get_cookie("id", secret = kodiranje):
         piskotek = request.get_cookie("id", secret = kodiranje)
         return int(piskotek) 
     else:
@@ -139,7 +140,7 @@ def prijavljanje():
         redirect(string)
 #        return template('uporabnik.html', id = id, ime = ime, priimek=priimek, drzava = drzava, racun = racun, trans = cur, stanje = stanje)
     else:
-        return template('prijava.html', napaka = 1, stanje = uid)
+        return template('prijava.html', napaka = 1, stanje = 0)
 
 @get('/registracija/')
 def register():
@@ -174,13 +175,16 @@ def uporabnik(stanje):
     ukaz4 = ("SELECT SUM(znesek) FROM TRANSAKCIJE WHERE uporabnik = (%s)")
     cur.execute(ukaz4, (racun, ))
     for x in cur:
-        vrednost = x[0]
+        vre = x[0]
+    try: vrednost = int(vre)
+    except: vrednost = 0
     ukaz3 = ("SELECT * FROM TRANSAKCIJE WHERE uporabnik = (%s) AND TIP = 0 ORDER BY id DESC LIMIT 20")
     cur.execute(ukaz3,(racun, ))
     trans = cur.fetchall()
     ukaz5 = ("SELECT * FROM TRANSAKCIJE WHERE uporabnik = (%s) AND TIP = 1 ORDER BY id DESC LIMIT 20")
     cur.execute(ukaz5,(racun, ))
     trans_delnice = cur.fetchall()
+    stanje = id_uporabnik()
     return template('uporabnik.html', stanje = stanje, id=a, ime=b, priimek = c, drzava = d, racun  =e, trans=trans, vrednost = vrednost, trans_delnice = trans_delnice)
 
 
@@ -223,7 +227,8 @@ def registracija():
 
         ukaz_pri = ('INSERT INTO PRIJAVA(id, mail, geslo) VALUES ((%s), (%s), (%s))')
         cur.execute(ukaz_pri, (uid, email, geslo1, ))
-        string = '/uporabnik/{0}'.format(uid)
+        response.set_cookie("id",uid, path='/', secret = kodiranje)
+        string = '/uporabnik/{0}/'.format(uid)
         redirect(string)
     else:
         return template('registracija.html', stanje = stanje, napaka = 4)
@@ -245,8 +250,11 @@ def stanje_racun(st):
     racun = doloci_racun(st)
     ukaz4 = ("SELECT SUM(znesek) FROM TRANSAKCIJE WHERE uporabnik = (%s)")
     cur.execute(ukaz4, (racun, ))
-    vrednost = cur.fetchone()
-    return vrednost[0]
+    for x in cur.fetchone():
+        try:
+            vrednost = x[0]
+        except: vrednost = 0
+    return vrednost
 
 
 @get('/uporabnik/<stanje>/denar/')
@@ -263,12 +271,14 @@ def denarovanje(stanje):
     except:
         vrednost = 0
     try:
-        dvig = int(request.forms.get('kolicina1'))
-        polog = int(request.forms.get('kolicina2'))
+        dvig = float(request.forms.get('kolicina1'))
+        polog = float(request.forms.get('kolicina2'))
         if dvig == 0 and polog == 0:
             return template('denar.html', vrednost = vrednost, stanje = stanje, napaka = 2)
     except:
         return template('denar.html', vrednost = vrednost, stanje = stanje, napaka = 2)
+    dvig = round(dvig,2)
+    polog = round(polog,2)
     znesek = polog - dvig
     prob  = vrednost + znesek
     if prob < 0:
@@ -303,7 +313,7 @@ def pregled_delnic(stanje):
     cur.execute(ukaz, (racun, ))
     delnice = cur.fetchall()
     vrednost_portfelja = vredost_delnic(stanje)
-    cur.execute("SELECT * FROM DELNICE")
+    cur.execute("SELECT * FROM DELNICE ORDER BY oznaka ASC")
     return template('delnice.html', stanje = stanje, delnice = delnice, vrednost_portfelja = vrednost_portfelja, vse = cur)
 
 @get('/uporabnik/<stanje>/trgovanje/<oznaka>/')
@@ -338,19 +348,23 @@ def trg(stanje, oznaka):
     ime = podatek[2]
     ukaz = ("SELECT sum(kolicina) FROM TRANSAKCIJE WHERE uporabnik = (%s) AND tip = 1 AND oznaka = (%s) GROUP BY oznaka")
     racun = doloci_racun(stanje)
+
     try:
         cur.execute(ukaz,(racun, oznaka))
         podatek = cur.fetchone()
         lastna_kolicina = podatek[0]
     except:
         lastna_kolicina = 0
+
     geslo = request.forms.get('geslo')
+
     try:
         kolicina1 = int(request.forms.get('kolicina1'))
         kolicina2 = int(request.forms.get('kolicina2'))
         prodajna_kolicina = -kolicina2
     except:
         return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
+
     if kolicina1 == 0 and kolicina2 == 0:
         return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
 
@@ -379,6 +393,7 @@ def trg(stanje, oznaka):
     if kolicina2 == 0 and kolicina_na_voljo - kolicina1 >= 0:
         if stanje_na_racunu - cena*kolicina1 < 0:
             return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
+
         cur.execute("SELECT nextval('trans_id')")
         trid = cur.fetchone()
         ukaz = ('INSERT INTO TRANSAKCIJE(id,znesek,uporabnik,oznaka,kolicina,tip) VALUES ((%s), (%s), (%s), (%s), (%s), 1)')
@@ -391,7 +406,20 @@ def trg(stanje, oznaka):
     if kolicina2 == 0 and kolicina_na_voljo - kolicina1 < 0:
         return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
 
-    
+@post('/posodobi/')
+def posodobi():
+    if id_uporabnik() != 69:
+        redirect('/zacetna_stran/')
+    sprememba = round(random.uniform(0.8,1.2),2)
+    cur.execute("SELECT oznaka FROM DELNICE")
+    oznake = cur.fetchall()
+    for oznaka in oznake:
+        cur.execute("SELECT cena FROM DELNICE WHERE oznaka = (%s)", (oznaka[0], ))
+        x = cur.fetchone()
+        cena = round(float(x[0]) * sprememba,2)
+        cur.execute("UPDATE delnice SET cena = (%s) WHERE oznaka = (%s)", (cena, oznaka[0], ))
+    redirect('/uporabnik/69/')
+
 
 
 baza = psycopg2.connect(database=db, host=host, user=user, password=password)

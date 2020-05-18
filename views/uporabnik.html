@@ -31,11 +31,25 @@
   <div class="content">
   <header>
   <h3><a href="/uporabnik/{{stanje}}/denar/" >S klikom naložite ali dvignite denar</a> </h3>
+  </header>
   </div>
   <div class="content">
+  <header>
   <h3><a href="/uporabnik/{{stanje}}/trgovanje/">Trgujte z delnicami</a> </h3>
+  </header>
+  </div>
+  
 </div>
-</div>
+  %if stanje == 69:
+  <div align="center">
+  <form action="/posodobi/" class="form-signin text-center" method='post' style="width: 30%;margin-top: 0cm">
+  <div class="h3 mb-3 font-weight-normal">
+  <input value='Posodobi' type='submit' />
+  </div>
+  </form>
+  </div>
+  %end
+
 %if trans == []:
   
   <h5> Naložite denar in začnite trgovati </h5>
