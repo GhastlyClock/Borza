@@ -31,9 +31,11 @@
 %if napaka == 4:
 <h3> Želeli ste dvigniti {{-prob}} EUR preveč. Prodajte delnice in poiskusite znova.</h3>
 %end
-<form action="/uporabnik/{{stanje}}/denar/" class="form text-center" method="POST" style="width: 30%;margin-top: 5cm">
 <div  class="center">
-    <div align="left">
+<div class="h3 mb-3 font-weight-normal">
+<form action="/uporabnik/{{stanje}}/denar/" class="form text-center" method="POST" style="width: 30%;margin-top: 5cm">
+
+    <div align="center">
     <div class="h3 mb-3 font-weight-normal">
     <span>Količina dviga</span>
     <br>
@@ -44,7 +46,7 @@
     </div>
 
 </div>
-<div align='right'>
+<div align='center'>
 <div class="h3 mb-3 font-weight-normal">
 <span> Količina pologa</span>
 <br>
@@ -63,8 +65,9 @@
 
 </div>
 </div>
+</div>
 </form>
-
+</div>
 
 
 

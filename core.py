@@ -10,6 +10,7 @@ psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo prob
 debug(True)
 
 kodiranje = 'laqwXUtKfHTp1SSpnkSg7VbsJtCgYS89QnvE7PedkXqbE8pPj7VeRUwqdXu1Fr1kEkMzZQAaBR93PoGWks11alfe8y3CPSKh3mEQ'
+
 def id_uporabnik():
     if request.get_cookie("id", secret = kodiranje):
         piskotek = request.get_cookie("id", secret = kodiranje)
@@ -88,22 +89,17 @@ def sektor(oznaka):
 @get('/topdelnice/')
 def delnice():
     stanje = id_uporabnik()
-    print(stanje)
     cur.execute('SELECT * FROM DELNICE ORDER BY cena DESC LIMIT 20')
     return template('topdelnice.html', delnice=cur, stanje = stanje)
 
 @get('/odjava/')
 def odjava():
     response.delete_cookie("id", path='/')
-    print(request.get_cookie("id"))
-    print(id_uporabnik())
     redirect('/zacetna_stran/')
 
 @get('/prijava/')
 def prijava():
     stanje = id_uporabnik()
-    print(request.get_cookie("id"))
-    print(stanje)
     if stanje !=0:
         redirect('/zacetna_stran/')
     napaka = 0
@@ -161,6 +157,10 @@ def register():
 
 @get('/uporabnik/<stanje>/')
 def uporabnik(stanje):
+    piskot = id_uporabnik()
+    if piskot == 0:
+        redirect('/zacetna_stran/')
+
     ukaz2 = ("SELECT * FROM UPORABNIK WHERE id = (%s)")
     cur.execute(ukaz2,(stanje, ))
     for a,b,c,d,e in cur:
@@ -200,7 +200,6 @@ def registracija():
         return template('registracija.html', stanje= stanje, napaka = 1)
     string = 'SELECT mail FROM PRIJAVA'
     cur.execute(string)
-    stevec = 0
     for x in cur:
         if x[0] == email:
             return template('registracija.html', stanje = stanje, napaka = 2)
@@ -247,7 +246,7 @@ def stanje_racun(st):
     racun = doloci_racun(st)
     ukaz4 = ("SELECT SUM(znesek) FROM TRANSAKCIJE WHERE uporabnik = (%s)")
     cur.execute(ukaz4, (racun, ))
-    for x in cur:
+    for x in cur.fetchone():
         try:
             vrednost = x[0]
         except: vrednost = 0
@@ -261,12 +260,7 @@ def denar(stanje):
 
 @post('/uporabnik/<stanje>/denar/')
 def denarovanje(stanje):
-    try:
-        vrednost = stanje_racun(stanje)
-        if vrednost == None:
-            vrednost = 0
-    except:
-        vrednost = 0
+    vrednost = stanje_racun(stanje)
     try:
         dvig = float(request.forms.get('kolicina1'))
         polog = float(request.forms.get('kolicina2'))
