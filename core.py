@@ -23,14 +23,11 @@ def id_uporabnik():
 
 
 #Popravek problema, ko bottle ne najde templatea
-def bottle_monkeypatch():
-    """
-    This adds /common folder to bottle template path, thus
-    makes templating cleaner and more manageable.
-    """
-    from bottle import TEMPLATE_PATH
-    global TEMPLATE_PATH
-    TEMPLATE_PATH.insert(0, './views')
+import bottle
+import os     
+abs_app_dir_path = os.path.dirname(os.path.realpath(__file__))
+abs_views_path = os.path.join(abs_app_dir_path, 'views')
+bottle.TEMPLATE_PATH.insert(0, abs_views_path )
 
 # Mapa za statične vire (slike, css, ...)
 static_dir = "./static"
