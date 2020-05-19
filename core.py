@@ -367,6 +367,7 @@ def trg(stanje, oznaka):
         return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
     if kolicina1 < 0 or kolicina2 < 0:
         return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
+        
     if kolicina1 == 0 and kolicina2 == 0:
         print('obe sta 0')
         return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
