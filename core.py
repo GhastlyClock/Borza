@@ -270,7 +270,7 @@ def denarovanje(stanje):
     try:
         dvig = float(request.forms.get('kolicina1'))
         polog = float(request.forms.get('kolicina2'))
-        if dvig == 0 and polog == 0:
+        if dvig == 0 and polog == 0 or dvig < 0 or polog < 0:
             return template('denar.html', vrednost = vrednost, stanje = stanje, napaka = 2)
     except:
         return template('denar.html', vrednost = vrednost, stanje = stanje, napaka = 2)
@@ -364,7 +364,7 @@ def trg(stanje, oznaka):
         return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
     if kolicina1 < 0 or kolicina2 < 0:
         return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
-        
+
     if kolicina1 == 0 and kolicina2 == 0:
         print('obe sta 0')
         return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
