@@ -1,0 +1,11 @@
+INSERT INTO SEKTOR (opis) VALUES ('V energetski sektor spadajo podjetja, ki proizvajajo energijo ali pa jo distribuirajo.') WHERE id = 'XLE';
+INSERT INTO SEKTOR (opis) VALUES ('Nepremièninski sektor sestavljajo podjetja, ki se ukvarjajo z izgradno nepremiènin ali njihovo prodajo') WHERE id = 'IYR';
+INSERT INTO SEKTOR (opis) VALUES ('Sektor tvorijo podjetja, ki se ukvarjajo s proizvodnjo nujnih potrebšèin, kot je hrana, pijaèa in osebna higiena.') WHERE id = 'XLP';
+INSERT INTO SEKTOR (opis) VALUES ('V tem sektorju so delnice podjetij, ki zagotavljajo nenujne potrebšèine, kot so luksuz in avtomobili.') WHERE id = 'XLY';
+INSERT INTO SEKTOR (opis) VALUES ('Industrijski sektor tvorijo podjetja, ki so povezana z industrijo, na primer železarne in druge tovarne.') WHERE id = 'XLI';
+INSERT INTO SEKTOR (opis) VALUES ('Javni sektor so podjetja, ki dobavljajo vodo, plin, elektriko in telefon. ') WHERE id = 'XLU';
+INSERT INTO SEKTOR (opis) VALUES ('Sektor sestavljajo podjetja, ki se ukvarjajo z informacijski tehnologijo.') WHERE id = 'SMH';
+INSERT INTO SEKTOR (opis) VALUES ('Sektor je sestavljen iz delnic telekomunikacijskih podjetij.') WHERE id = 'XLT';
+INSERT INTO SEKTOR (opis) VALUES ('Finanèni sektor predstavljajo banke, zavarovalnice in druge finanène ustanove.') WHERE id = 'XLF';
+INSERT INTO SEKTOR (opis) VALUES ('Zdravstveni sektor je sestavljen iz podjetij, ki dobavljajo medicinski material in druge zdravstvene potrebšèine.') WHERE id = 'XLV';
+INSERT INTO SEKTOR (opis) VALUES ('Delnice podjetij, ki se ukvarjajo s predelavo surovin sestavljajo ta sektor.') WHERE id = 'XLB';
