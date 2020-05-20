@@ -19,10 +19,6 @@ def id_uporabnik():
         return 0
 
 
-
-
-
-
 #Popravek problema, ko bottle ne najde templatea
 import bottle
 import os     
@@ -74,7 +70,7 @@ def borza(oznaka):
 @get('/sektorji/')
 def sektorji():
     stanje = id_uporabnik()
-    cur.execute("SELECT id,ime_sektorja,cena_mrd FROM SEKTOR")
+    cur.execute("SELECT id,ime_sektorja,opis FROM SEKTOR")
     return template('sektorji.html', sektorji=cur, stanje = stanje)
 
 @get('/sektorji/<oznaka>')
@@ -409,10 +405,10 @@ def trg(stanje, oznaka):
 def posodobi():
     if id_uporabnik() != 69:
         redirect('/zacetna_stran/')
-    sprememba = round(random.uniform(0.8,1.2),2)
     cur.execute("SELECT oznaka FROM DELNICE")
     oznake = cur.fetchall()
     for oznaka in oznake:
+        sprememba = round(random.uniform(0.8,1.2),2)
         cur.execute("SELECT cena FROM DELNICE WHERE oznaka = (%s)", (oznaka[0], ))
         x = cur.fetchone()
         cena = round(float(x[0]) * sprememba,2)
