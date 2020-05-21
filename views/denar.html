@@ -31,42 +31,28 @@
 %if napaka == 4:
 <h3> Želeli ste dvigniti {{-prob}} EUR preveč. Prodajte delnice in poiskusite znova.</h3>
 %end
-<div  class="center">
-<div class="h3 mb-3 font-weight-normal">
-<form action="/uporabnik/{{stanje}}/denar/" class="form text-center" method="POST" style="width: 30%;margin-top: 5cm">
+<div  align="center">
 
-    <div align="center">
-    <div class="h3 mb-3 font-weight-normal">
+<form action="/uporabnik/{{stanje}}/denar/" class="form text-center" method="POST" style="width: 30%;margin-top: 5cm">
     <span>Količina dviga</span>
     <br>
     <input name='kolicina1' type='integer' value = '0'/> EUR
     <br>
-    
-    </div>
-    </div>
+  <span> Količina pologa</span>
+  <br>
+  <input name='kolicina2' type='integer' value = '0' /> EUR
+  <br>
+  %if napaka == 1:
+  <h5> Geslo ni pravilo </h5>
+  %end
+  <span>Geslo:</span>
+  <input name='geslo' type='password' />
+  <input type='submit'  value='Potrdi'/>
 
-</div>
-<div align='center'>
-<div class="h3 mb-3 font-weight-normal">
-<span> Količina pologa</span>
-<br>
-<input name='kolicina2' type='integer' value = '0' /> EUR
-<br>
-</div>
-</div>
-<div align ="center">
 
-%if napaka == 1:
-<h5> Geslo ni pravilo </h5>
-%end
-<span>Geslo:</span>
-<input name='geslo' type='password' />
-<input type='submit'  value='Potrdi'/>
 
-</div>
-</div>
-</div>
 </form>
+
 </div>
 
 
@@ -76,9 +62,12 @@
 <footer id = "footer">
   <div class="inner">
     <div class="content">
-    <section> Random1</section>
-    <section> random2</section>
-    <section> ranom3 </section>
+    <section> <h3>M. Gandhi:</h3>
+    <h5>Stonks go up and down </h5></section>
+    <section> <h3>A. Einstein</h3>
+    <h5>Don't be an idiot, put all money into stonks.</h5></section>
+    <section> <h3>Everyone before 2008</h3>
+    <h5>Housing market can not fail, are you crazy?</h5> </section>
     </div>
   </div>
 </footer>

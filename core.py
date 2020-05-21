@@ -2,6 +2,7 @@ from bottle import *
 import requests
 from auth_public import *
 import random
+import hashlib
 
 
 import psycopg2, psycopg2.extensions, psycopg2.extras
@@ -107,12 +108,16 @@ def preveri_uporabnika(ime,geslo):
     ukaz = ("SELECT geslo FROM PRIJAVA WHERE mail = (%s)")
     cur.execute(ukaz,(ime, ))
     for passw in cur:
-        if passw[0] == geslo:
+        if passw[0] == hashGesla(geslo):
             return True
         else:
             return False
 
 
+def hashGesla(s):
+    m = hashlib.sha256()
+    m.update(s.encode("utf-8"))
+    return m.hexdigest()
 
 @post('/prijava/')
 def prijavljanje():
@@ -120,10 +125,10 @@ def prijavljanje():
     geslo = request.forms.get('geslo')
 
     if preveri_uporabnika(ime,geslo):
-        ukaz1 = ("SELECT id FROM PRIJAVA WHERE geslo = (%s) AND mail = (%s)")
-        cur.execute(ukaz1, (geslo,ime, ))
-        for id in cur:
-            uid = id[0]
+        ukaz1 = ("SELECT id FROM PRIJAVA WHERE mail = (%s)")
+        cur.execute(ukaz1, (ime, ))
+        for x in cur:
+            uid = x[0]
         response.set_cookie("id",uid, path='/', secret = kodiranje)
         string = '/uporabnik/{0}/'.format(uid)
         redirect(string)
@@ -218,7 +223,7 @@ def registracija():
         cur.execute(ukaz_reg,(uid, ime, priimek, drzava, trr, ))
 
         ukaz_pri = ('INSERT INTO PRIJAVA(id, mail, geslo) VALUES ((%s), (%s), (%s))')
-        cur.execute(ukaz_pri, (uid, email, geslo1, ))
+        cur.execute(ukaz_pri, (uid, email, hashGesla(geslo1), ))
         response.set_cookie("id",uid, path='/', secret = kodiranje)
         string = '/uporabnik/{0}/'.format(uid)
         redirect(string)
@@ -244,7 +249,7 @@ def stanje_racun(st):
     cur.execute(ukaz4, (racun, ))
     for x in cur.fetchone():
         try:
-            vrednost = x[0]
+            vrednost = x
         except: vrednost = 0
     return vrednost
 
