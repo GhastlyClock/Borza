@@ -114,7 +114,8 @@ def preveri_uporabnika(ime,geslo):
             return False
 
 def preveri_geslo(uid, geslo):
-    cur.execute('SELECT geslo FROM PRIJAVA WHERE id = uid')
+    ukaz = ('SELECT geslo FROM PRIJAVA WHERE id = (%s)')
+    cur.execute(ukaz,(uid, ))
     for x in cur:
         try:
             hashi = x[0]
