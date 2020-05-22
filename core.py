@@ -113,6 +113,17 @@ def preveri_uporabnika(ime,geslo):
         else:
             return False
 
+def preveri_geslo(uid, geslo):
+    cur.execute('SELECT geslo FROM PRIJAVA WHERE id = uid')
+    for x in cur:
+        try:
+            hashi = x[0]
+        except:
+            return False 
+    if hashi == hashGesla(geslo):
+        return True
+    return False
+            
 
 def hashGesla(s):
     m = hashlib.sha256()
@@ -197,7 +208,7 @@ def registracija():
     trr = request.forms.get('trr')
     geslo1 = request.forms.get('pass1')
     geslo2 = request.forms.get('pass2')
-    if ime is '' or priimek is '' or email is '' or drzava is '' or trr is '' or geslo1 is '' or geslo2 is '':
+    if ime == '' or priimek == '' or email == '' or drzava == '' or trr == '' or geslo1 == '' or geslo2 == '':
         return template('registracija.html', stanje= stanje, napaka = 1)
     string = 'SELECT mail FROM PRIJAVA'
     cur.execute(string)
@@ -249,7 +260,7 @@ def stanje_racun(st):
     cur.execute(ukaz4, (racun, ))
     for x in cur.fetchone():
         try:
-            vrednost = x
+            vrednost = float(x)
         except: vrednost = 0
     return vrednost
 
@@ -276,11 +287,10 @@ def denarovanje(stanje):
     if prob < 0:
         return template('denar.html', vrednost = vrednost, stanje=stanje, napaka=4, prob = prob)
     geslo = request.forms.get('geslo')
-    if geslo != doloci_geslo(stanje):
+    if not preveri_geslo(stanje, geslo):
         return template('denar.html', vrednost = vrednost, stanje = stanje, napaka = 1)
     cur.execute("SELECT nextval('trans_id')")
     trid = cur.fetchone()
-    print(trid)
     ukaz = ('INSERT INTO TRANSAKCIJE(id,znesek,uporabnik,tip) VALUES ((%s), (%s), (%s), 0)')
     cur.execute(ukaz, (trid[0], znesek, doloci_racun(stanje)))
     redirect ('/uporabnik/{0}/'.format(stanje))
@@ -368,7 +378,7 @@ def trg(stanje, oznaka):
         print('obe nista 0')
         return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 3)
 
-    if geslo != doloci_geslo(stanje):
+    if not preveri_geslo(stanje,geslo):
         return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 2)
 
     
