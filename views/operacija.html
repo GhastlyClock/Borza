@@ -26,6 +26,7 @@
 <body>
 <h1> Delnica podjetja {{ime}} ima trenutno ceno {{cena}} EUR.</h1>
 <h2> V lasti imate {{kolicina2}} delnic tega podjetja, na voljo jih je še {{kolicina1}}.</h2>
+<div align='center'>
 <form action="/uporabnik/{{stanje}}/trgovanje/{{oznaka}}/" method="post" style="width: 30%;margin-top: 5cm">
 %if napaka == 1:
     <h3>Neveljaven vnos žejene količine delnic</h3>
@@ -33,27 +34,21 @@
 %if napaka == 3:
     <h3> Na enkrat ni mogoče izvesti nakupa in prodaje iste delnice. </h3>
 %end
-<div  class="center">
-    <div align="left">
+
+    
     <div class="h3 mb-3 font-weight-normal">
     <span>Število delnic, ki jih želite kupiti</span>
     <br>
     <input name='kolicina1' type='integer' value = '0'/> 
     <br>
     
-    </div>
-    </div>
+    
 
-</div>
-<div align='right'>
-<div class="h3 mb-3 font-weight-normal">
+
 <span>Število delnic, ki jih želite prodati</span>
 <br>
 <input name='kolicina2' type='integer' value = '0' /> 
 <br>
-</div>
-</div>
-<div align ="center">
 
 %if napaka == 2:
 <h5> Geslo ni pravilo </h5>
@@ -63,13 +58,17 @@
 <input type='submit'  value='Potrdi'/>
 
 </form>
+</div>
 </body>
 <footer id = "footer">
   <div class="inner">
     <div class="content">
-    <section> Random1</section>
-    <section> random2</section>
-    <section> ranom3 </section>
+    <section> <h3>M. Gandhi:</h3>
+    <h5>Stonks go up and down </h5></section>
+    <section> <h3>A. Einstein</h3>
+    <h5>Don't be an idiot, put all money into stonks.</h5></section>
+    <section> <h3>Everyone before 2008</h3>
+    <h5>Housing market can not fail, are you crazy?</h5> </section>
     </div>
   </div>
 </footer>
