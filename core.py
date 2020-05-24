@@ -268,6 +268,8 @@ def stanje_racun(st):
 
 @get('/uporabnik/<stanje>/denar/')
 def denar(stanje):
+    if id_uporabnik() != stanje:
+        redirect('/zacetna_stran/')
     vrednost = stanje_racun(stanje)
     return template('denar.html', vrednost = vrednost, stanje = stanje, napaka = 0)
 
@@ -311,6 +313,8 @@ def vredost_delnic(st):
 
 @get('/uporabnik/<stanje>/trgovanje/')
 def pregled_delnic(stanje):
+    if id_uporabnik() != stanje:
+        redirect('/zacetna_stran/')
     ukaz = ("SELECT oznaka, sum(kolicina) FROM TRANSAKCIJE WHERE uporabnik = (%s) AND tip = 1 GROUP BY oznaka")
     racun = doloci_racun(stanje)
     cur.execute(ukaz, (racun, ))
@@ -319,14 +323,33 @@ def pregled_delnic(stanje):
     cur.execute("SELECT * FROM DELNICE ORDER BY oznaka ASC")
     return template('delnice.html', stanje = stanje, delnice = delnice, vrednost_portfelja = vrednost_portfelja, vse = cur)
 
+
+
+def nova_cena_nakup(kolicina_nakupa, kolicina_vseh):
+    if kolicina_nakupa > 0 and kolicina_vseh > 0:
+        alfa = round(random.uniform(0.5,2),2)
+        novi = 1+alfa*(kolicina_nakupa/kolicina_vseh)
+        return novi
+
+def nova_cena_prodaja(kolicina_prodaje, kolicina_vseh):
+    if kolicina_prodaje > 0 and kolicina_vseh > 0:
+        alfa = round(random.uniform(0.5,2),2)
+        novi = 1-alfa*(kolicina_prodaje/kolicina_vseh)
+        return novi
+
+
+
 @get('/uporabnik/<stanje>/trgovanje/<oznaka>/')
 def trgovanje(stanje, oznaka):
+    if id_uporabnik() != stanje:
+        redirect('/zacetna_stran/')
     ukaz =("SELECT cena,kolicina,ime FROM DELNICE where oznaka = (%s)")
     cur.execute(ukaz,(oznaka, ))
     podatek = cur.fetchone()
     cena = podatek[0]
     kolicina_na_voljo = podatek[1]
     ime = podatek[2]
+    stevilo_delnic = int(round(kolicina_na_voljo/100,0))
     ukaz = ("SELECT sum(kolicina) FROM TRANSAKCIJE WHERE uporabnik = (%s) AND tip = 1 AND oznaka = (%s) GROUP BY oznaka")
     racun = doloci_racun(stanje)
     try:
@@ -335,7 +358,7 @@ def trgovanje(stanje, oznaka):
         lastna_kolicina = podatek[0]
     except:
         lastna_kolicina = 0
-    return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 0)
+    return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 0, stevilo_delnic = stevilo_delnic)
 
      
 
@@ -349,6 +372,7 @@ def trg(stanje, oznaka):
     cena = podatek[0]
     kolicina_na_voljo = podatek[1]
     ime = podatek[2]
+    stevilo_delnic = int(round(kolicina_na_voljo/100,0))
     ukaz = ("SELECT sum(kolicina) FROM TRANSAKCIJE WHERE uporabnik = (%s) AND tip = 1 AND oznaka = (%s) GROUP BY oznaka")
     racun = doloci_racun(stanje)
 
@@ -392,17 +416,20 @@ def trg(stanje, oznaka):
         ukaz = ('UPDATE delnice SET kolicina = (%s) WHERE oznaka = (%s)')
         sprememba = kolicina_na_voljo + prodajna_kolicina
         cur.execute(ukaz,(sprememba, oznaka, ))
+        ukaz = ('UPDATE delnice SET cena = (%s) WHERE oznaka = (%s)')
+        nova_cena = round(float(cena) * float(nova_cena_prodaja(kolicina2,kolicina_na_voljo)),2)
+        cur.execute(ukaz,(nova_cena, oznaka, ))
         string = '/uporabnik/{0}/'.format(stanje)
         redirect(string)
 
     if kolicina1 == 0 and lastna_kolicina + prodajna_kolicina < 0:
         print('napaka z vsoto')
-        return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
+        return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1, stevilo_delnic=stevilo_delnic)
     
-    if kolicina2 == 0 and kolicina_na_voljo - kolicina1 >= 0:
-        if stanje_na_racunu - cena*kolicina1 < 0:
+    if kolicina2 == 0 and kolicina_na_voljo - kolicina1 >= 0 and kolicina1 <= stevilo_delnic:
+        if float(stanje_na_racunu) - float(cena)*float(kolicina1) < 0:
             print('napaka z denarjem')
-            return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
+            return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1, stevilo_delnic=stevilo_delnic)
 
         cur.execute("SELECT nextval('trans_id')")
         trid = cur.fetchone()
@@ -411,11 +438,14 @@ def trg(stanje, oznaka):
         ukaz = ('UPDATE delnice SET kolicina = (%s) WHERE oznaka = (%s)')
         sprememba = kolicina_na_voljo - kolicina1
         cur.execute(ukaz,(sprememba, oznaka, ))
+        ukaz = ('UPDATE delnice SET cena = (%s) WHERE oznaka = (%s)')
+        nova_cena = round(float(cena) * float(nova_cena_nakup(kolicina1,kolicina_na_voljo)),2)
+        cur.execute(ukaz,(nova_cena, oznaka, ))
         string = '/uporabnik/{0}/'.format(stanje)
         redirect(string)
     if kolicina2 == 0 and kolicina_na_voljo - kolicina1 < 0:
         print('zadnja napaka')
-        return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
+        return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1, stevilo_delnic=stevilo_delnic)
 
 @post('/posodobi/')
 def posodobi():
