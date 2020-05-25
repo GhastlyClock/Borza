@@ -23,8 +23,6 @@ def rtemplate(*largs, **kwargs):
     """
     return template(ROOT=ROOT, *largs, **kwargs)
 
-def rredirect(*largs, **kwargs):
-    return redirect(ROOT = ROOT, *largs, **kwargs)
 
 debug(True)
 
@@ -110,13 +108,13 @@ def delnice():
 @get('/odjava/')
 def odjava():
     response.delete_cookie("id", path='/')
-    rredirect('/zacetna_stran/')
+    redirect('/zacetna_stran/')
 
 @get('/prijava/')
 def prijava():
     stanje = id_uporabnik()
     if stanje !=0:
-        rredirect('/zacetna_stran/')
+        redirect('//zacetna_stran/')
     napaka = 0
     return rtemplate('prijava.html', napaka=napaka, stanje = stanje)
 
@@ -160,8 +158,8 @@ def prijavljanje():
         for x in cur:
             uid = x[0]
         response.set_cookie("id",uid, path='/', secret = kodiranje)
-        string = '/uporabnik/{0}/'.format(uid)
-        rredirect(string)
+        string = '//uporabnik/{0}/'.format(uid)
+        redirect(string)
 #        return template('uporabnik.html', id = id, ime = ime, priimek=priimek, drzava = drzava, racun = racun, trans = cur, stanje = stanje)
     else:
         return rtemplate('prijava.html', napaka = 1, stanje = 0)
@@ -170,7 +168,7 @@ def prijavljanje():
 def register():
     stanje = id_uporabnik()
     if stanje !=0:
-        rredirect('/zacetna_stran/')
+        redirect('//zacetna_stran/')
     return rtemplate('registracija.html', stanje = stanje, napaka = 0)
 
 #def pridobi_podatke(stevilo):
@@ -190,7 +188,7 @@ def register():
 def uporabnik(stanje):
     piskot = id_uporabnik()
     if piskot != int(stanje):
-        rredirect('/zacetna_stran/')
+        redirect('//zacetna_stran/')
 
     ukaz2 = ("SELECT * FROM UPORABNIK WHERE id = (%s)")
     cur.execute(ukaz2,(stanje, ))
@@ -255,8 +253,8 @@ def registracija():
         ukaz_pri = ('INSERT INTO PRIJAVA(id, mail, geslo) VALUES ((%s), (%s), (%s))')
         cur.execute(ukaz_pri, (uid, email, hashGesla(geslo1), ))
         response.set_cookie("id",uid, path='/', secret = kodiranje)
-        string = '/uporabnik/{0}/'.format(uid)
-        rredirect(string)
+        string = '//uporabnik/{0}/'.format(uid)
+        redirect(string)
     else:
         return rtemplate('registracija.html', stanje = stanje, napaka = 4)
 
@@ -290,7 +288,7 @@ def denar(stanje):
     print(piskotek)
     print(stanje)
     if piskotek != int(stanje):
-        rredirect('/zacetna_stran/')
+        redirect('//zacetna_stran/')
     vrednost = stanje_racun(stanje)
     return rtemplate('denar.html', vrednost = vrednost, stanje = stanje, napaka = 0)
 
@@ -317,7 +315,7 @@ def denarovanje(stanje):
     trid = cur.fetchone()
     ukaz = ('INSERT INTO TRANSAKCIJE(id,znesek,uporabnik,tip) VALUES ((%s), (%s), (%s), 0)')
     cur.execute(ukaz, (trid[0], znesek, doloci_racun(stanje)))
-    rredirect ('/uporabnik/{0}/'.format(stanje))
+    redirect ('//uporabnik/{0}/'.format(stanje))
 
 def vredost_delnic(st):
     ukaz = ("SELECT oznaka, sum(kolicina) FROM TRANSAKCIJE WHERE uporabnik = (%s) AND tip = 1 GROUP BY oznaka")
@@ -338,7 +336,7 @@ def pregled_delnic(stanje):
     print(piskotek)
     print(stanje)
     if piskotek != int(stanje):
-        rredirect('/zacetna_stran/')
+        redirect('//zacetna_stran/')
     ukaz = ("SELECT oznaka, sum(kolicina) FROM TRANSAKCIJE WHERE uporabnik = (%s) AND tip = 1 GROUP BY oznaka")
     racun = doloci_racun(stanje)
     cur.execute(ukaz, (racun, ))
@@ -367,7 +365,7 @@ def nova_cena_prodaja(kolicina_prodaje, kolicina_vseh):
 def trgovanje(stanje, oznaka):
     piskotek = id_uporabnik()
     if piskotek != int(stanje):
-        rredirect('/zacetna_stran/')
+        redirect('//zacetna_stran/')
     ukaz =("SELECT cena,kolicina,ime FROM DELNICE where oznaka = (%s)")
     cur.execute(ukaz,(oznaka, ))
     podatek = cur.fetchone()
@@ -444,8 +442,8 @@ def trg(stanje, oznaka):
         ukaz = ('UPDATE delnice SET cena = (%s) WHERE oznaka = (%s)')
         nova_cena = round(float(cena) * float(nova_cena_prodaja(kolicina2,kolicina_na_voljo)),2)
         cur.execute(ukaz,(nova_cena, oznaka, ))
-        string = '/uporabnik/{0}/'.format(stanje)
-        rredirect(string)
+        string = '//uporabnik/{0}/'.format(stanje)
+        redirect(string)
 
     if kolicina1 == 0 and lastna_kolicina + prodajna_kolicina < 0:
         print('napaka z vsoto')
@@ -466,8 +464,8 @@ def trg(stanje, oznaka):
         ukaz = ('UPDATE delnice SET cena = (%s) WHERE oznaka = (%s)')
         nova_cena = round(float(cena) * float(nova_cena_nakup(kolicina1,kolicina_na_voljo)),2)
         cur.execute(ukaz,(nova_cena, oznaka, ))
-        string = '/uporabnik/{0}/'.format(stanje)
-        rredirect(string)
+        string = '//uporabnik/{0}/'.format(stanje)
+        redirect(string)
     if kolicina2 == 0 and kolicina_na_voljo - kolicina1 < 0:
         print('zadnja napaka')
         return rtemplate('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1, stevilo_delnic=stevilo_delnic)
@@ -486,7 +484,7 @@ def posodobi():
         x = cur.fetchone()
         cena = round(float(x[0]) * sprememba,2)
         cur.execute("UPDATE delnice SET cena = (%s) WHERE oznaka = (%s)", (cena, oznaka[0], ))
-    rredirect('/uporabnik/69/')
+    redirect('//uporabnik/69/')
 
 
 
