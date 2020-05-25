@@ -171,7 +171,7 @@ def register():
 @get('/uporabnik/<stanje>/')
 def uporabnik(stanje):
     piskot = id_uporabnik()
-    if piskot == 0:
+    if piskot != int(stanje):
         redirect('/zacetna_stran/')
 
     ukaz2 = ("SELECT * FROM UPORABNIK WHERE id = (%s)")
@@ -268,7 +268,10 @@ def stanje_racun(st):
 
 @get('/uporabnik/<stanje>/denar/')
 def denar(stanje):
-    if id_uporabnik() != stanje:
+    piskotek = id_uporabnik
+    print(piskotek)
+    print(stanje)
+    if piskotek != int(stanje):
         redirect('/zacetna_stran/')
     vrednost = stanje_racun(stanje)
     return template('denar.html', vrednost = vrednost, stanje = stanje, napaka = 0)
@@ -313,7 +316,10 @@ def vredost_delnic(st):
 
 @get('/uporabnik/<stanje>/trgovanje/')
 def pregled_delnic(stanje):
-    if id_uporabnik() != stanje:
+    piskotek = id_uporabnik()
+    print(piskotek)
+    print(stanje)
+    if piskotek != int(stanje):
         redirect('/zacetna_stran/')
     ukaz = ("SELECT oznaka, sum(kolicina) FROM TRANSAKCIJE WHERE uporabnik = (%s) AND tip = 1 GROUP BY oznaka")
     racun = doloci_racun(stanje)
@@ -341,7 +347,8 @@ def nova_cena_prodaja(kolicina_prodaje, kolicina_vseh):
 
 @get('/uporabnik/<stanje>/trgovanje/<oznaka>/')
 def trgovanje(stanje, oznaka):
-    if id_uporabnik() != stanje:
+    piskotek = id_uporabnik
+    if piskotek != int(stanje):
         redirect('/zacetna_stran/')
     ukaz =("SELECT cena,kolicina,ime FROM DELNICE where oznaka = (%s)")
     cur.execute(ukaz,(oznaka, ))
