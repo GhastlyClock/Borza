@@ -453,6 +453,8 @@ def trg(stanje, oznaka):
     if kolicina2 == 0 and kolicina_na_voljo - kolicina1 < 0:
         print('zadnja napaka')
         return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1, stevilo_delnic=stevilo_delnic)
+    else:
+        return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1, stevilo_delnic=stevilo_delnic)
 
 @post('/posodobi/')
 def posodobi():
