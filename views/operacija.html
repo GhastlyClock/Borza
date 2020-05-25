@@ -24,9 +24,9 @@
     </div>
     </head>
 <body>
-<h1> Delnica podjetja {{ime}} ima trenutno ceno {{cena}} EUR.</h1>
-<h2> V lasti imate {{kolicina2}} delnic tega podjetja, na voljo jih je še {{kolicina1}}.</h2>
-<h3> Zaradi preprečevanja arbitraže lahko kupite največ {{stevilo_delnic}} delnic tega podjetja.</h3>
+<h1 align = center> Delnica podjetja {{ime}} <br/> ima trenutno ceno {{cena}} EUR.</h1>
+<h2 align = center> V lasti imate {{kolicina2}} delnic tega podjetja, na voljo jih je še {{kolicina1}}.</h2>
+<h3 align = center> Zaradi preprečevanja arbitraže lahko kupite največ {{stevilo_delnic}} delnic tega podjetja.</h3>
 <div align='center'>
 <form action="/uporabnik/{{stanje}}/trgovanje/{{oznaka}}/" method="post" style="width: 30%;margin-top: 5cm">
 %if napaka == 1:
