@@ -161,7 +161,7 @@ def prijavljanje():
             uid = x[0]
         response.set_cookie("id",uid, path='/', secret = kodiranje)
         string = '/uporabnik/{0}/'.format(uid)
-        rredirect(string)
+        redirect(string)
 #        return template('uporabnik.html', id = id, ime = ime, priimek=priimek, drzava = drzava, racun = racun, trans = cur, stanje = stanje)
     else:
         return rtemplate('prijava.html', napaka = 1, stanje = 0)
