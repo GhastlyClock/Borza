@@ -12,3 +12,4 @@ __pycache__
 auth.py
 auth.R
 Thumbs.db
+.vscode
