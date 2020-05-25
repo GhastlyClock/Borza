@@ -268,7 +268,7 @@ def stanje_racun(st):
 
 @get('/uporabnik/<stanje>/denar/')
 def denar(stanje):
-    piskotek = id_uporabnik
+    piskotek = id_uporabnik()
     print(piskotek)
     print(stanje)
     if piskotek != int(stanje):
@@ -347,7 +347,7 @@ def nova_cena_prodaja(kolicina_prodaje, kolicina_vseh):
 
 @get('/uporabnik/<stanje>/trgovanje/<oznaka>/')
 def trgovanje(stanje, oznaka):
-    piskotek = id_uporabnik
+    piskotek = id_uporabnik()
     if piskotek != int(stanje):
         redirect('/zacetna_stran/')
     ukaz =("SELECT cena,kolicina,ime FROM DELNICE where oznaka = (%s)")
