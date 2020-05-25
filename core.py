@@ -8,6 +8,18 @@ import hashlib
 import psycopg2, psycopg2.extensions, psycopg2.extras
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo problemov s sumniki
 
+import os
+
+# privzete nastavitve
+SERVER_PORT = os.environ.get('BOTTLE_PORT', 8080)
+RELOADER = os.environ.get('BOTTLE_RELOADER', True)
+ROOT = os.environ.get('BOTTLE_ROOT', '/')
+DB_PORT = os.environ.get('POSTGRES_PORT', 5432)
+
+
+
+
+
 debug(True)
 
 kodiranje = 'laqwXUtKfHTp1SSpnkSg7VbsJtCgYS89QnvE7PedkXqbE8pPj7VeRUwqdXu1Fr1kEkMzZQAaBR93PoGWks11alfe8y3CPSKh3mEQ'
@@ -472,10 +484,10 @@ def posodobi():
 
 
 
-baza = psycopg2.connect(database=db, host=host, user=user, password=password)
+baza = psycopg2.connect(database=db, host=host, user=user, password=password, port=DB_PORT)
 baza.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
 cur = baza.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 
-run(host='localhost', port=8080, reloader=True)
+run(host='localhost', port=SERVER_PORT, reloader=RELOADER)
 
