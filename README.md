@@ -18,3 +18,6 @@ Uporabnik, ki ima zamrznjeni račun ne more opraviti nobene transakcije na splet
 
 
 ![Er diagram](ERdiagram.png)
+
+
+[![bottle.py](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jan248/Borza/master?urlpath=proxy/8080/)
