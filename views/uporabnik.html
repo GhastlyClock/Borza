@@ -2,22 +2,22 @@
 <html>
 
   <head>
-    <link rel="stylesheet" type="text/css"  href="/static/main.css">
+    <link rel="stylesheet" type="text/css"  href="{{ROOT}}/static/main.css">
     <meta charset='utf8'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <header id='header'>
-      <a class="logo" href='/zacetna_stran/'>Domov</a>
+      <a class="logo" href='{{ROOT}}/zacetna_stran/'>Domov</a>
       <nav>
-        <a href="/borze/">Borze</a>
-        <a href="/sektorji/">Sektorji</a>
-        <a href="/topdelnice/"> Top delnice</a>
+        <a href="{{ROOT}}/borze/">Borze</a>
+        <a href="{{ROOT}}/sektorji/">Sektorji</a>
+        <a href="{{ROOT}}/topdelnice/"> Top delnice</a>
         %if stanje == 0:
-        <a href="/prijava/">Prijava</a>
-        <a href="/registracija/">Registracija</a>
+        <a href="{{ROOT}}/prijava/">Prijava</a>
+        <a href="{{ROOT}}/registracija/">Registracija</a>
         %end 
         %if stanje != 0:
-        <a href="/uporabnik/{{stanje}}/">Moj profil</a>
-        <a href="/odjava/">Odjava</a>
+        <a href="{{ROOT}}/uporabnik/{{stanje}}/">Moj profil</a>
+        <a href="{{ROOT}}/odjava/">Odjava</a>
         %end
       </nav>
       </header>
@@ -25,14 +25,13 @@
     </head>
 
     <body>
-      <link rel="stylesheet" type="text/css"  href="/static/main.css">
 <h1>Pozdravljeni {{ime}} {{priimek}}.</h1>
 <div class="highlights">
   <div class="content">
   <header>
       <h3>
         <b>
-          <a href="/uporabnik/{{stanje}}/denar/" > S klikom naložite ali dvignite denar</a>
+          <a href="{{ROOT}}/uporabnik/{{stanje}}/denar/" > S klikom naložite ali dvignite denar</a>
         </b>
       </h3>
   </header>
@@ -41,7 +40,7 @@
   <header>
   <h3> 
     <b>
-      <a href="/uporabnik/{{stanje}}/trgovanje/">Trgujte z delnicami</a> 
+      <a href="{{ROOT}}/uporabnik/{{stanje}}/trgovanje/">Trgujte z delnicami</a> 
     </b>
   </h3>
   </header>

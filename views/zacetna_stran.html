@@ -6,18 +6,18 @@
     <meta charset='utf8'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <header id='header'>
-      <a class="logo" href='/zacetna_stran/'>Domov</a>
+      <a class="logo" href='{{ROOT}}/zacetna_stran/'>Domov</a>
       <nav>
-        <a href="/borze/">Borze</a>
-        <a href="/sektorji/">Sektorji</a>
-        <a href="/topdelnice/"> Top delnice</a>
+        <a href="{{ROOT}}/borze/">Borze</a>
+        <a href="{{ROOT}}/sektorji/">Sektorji</a>
+        <a href="{{ROOT}}/topdelnice/"> Top delnice</a>
         %if stanje == 0:
-        <a href="/prijava/">Prijava</a>
-        <a href="/registracija/">Registracija</a>
+        <a href="{{ROOT}}/prijava/">Prijava</a>
+        <a href="{{ROOT}}/registracija/">Registracija</a>
         %end 
         %if stanje != 0:
-        <a href="/uporabnik/{{stanje}}/">Moj profil</a>
-        <a href="/odjava/">Odjava</a>
+        <a href="{{ROOT}}/uporabnik/{{stanje}}/">Moj profil</a>
+        <a href="{{ROOT}}/odjava/">Odjava</a>
         %end
       </nav>
       </header>
@@ -33,7 +33,7 @@
     <h1>Zelo dobra borza</h1>
     <p>Naša borza je zelo dobra in vsi ki tu trgujejo, zaslužijo veliko denarja. <br /> 
       Če pa se najde kdo, ki je izgubil vse, je pa to njegova osebna krivda.</p>
-    <a href='/registracija/'><button>Odpri račun</button></a>
+    <a href='{{ROOT}}/registracija/'><button>Odpri račun</button></a>
 </div>
 
     </body>

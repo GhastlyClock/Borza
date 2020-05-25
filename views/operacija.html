@@ -2,22 +2,22 @@
 <html>
 
   <head>
-    <link rel="stylesheet" type="text/css"  href="/static/main.css">
+    <link rel="stylesheet" type="text/css"  href="{{ROOT}}/static/main.css">
     <meta charset='utf8'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <header id='header'>
-      <a class="logo" href='/zacetna_stran/'>Domov</a>
+      <a class="logo" href='{{ROOT}}/zacetna_stran/'>Domov</a>
       <nav>
-        <a href="/borze/">Borze</a>
-        <a href="/sektorji/">Sektorji</a>
-        <a href="/topdelnice/"> Top delnice</a>
+        <a href="{{ROOT}}/borze/">Borze</a>
+        <a href="{{ROOT}}/sektorji/">Sektorji</a>
+        <a href="{{ROOT}}/topdelnice/"> Top delnice</a>
         %if stanje == 0:
-        <a href="/prijava/">Prijava</a>
-        <a href="/registracija/">Registracija</a>
+        <a href="{{ROOT}}/prijava/">Prijava</a>
+        <a href="{{ROOT}}/registracija/">Registracija</a>
         %end 
         %if stanje != 0:
-        <a href="/uporabnik/{{stanje}}/">Moj profil</a>
-        <a href="/odjava/">Odjava</a>
+        <a href="{{ROOT}}/uporabnik/{{stanje}}/">Moj profil</a>
+        <a href="{{ROOT}}/odjava/">Odjava</a>
         %end
       </nav>
       </header>
@@ -28,7 +28,7 @@
 <h2 align = center> V lasti imate {{kolicina2}} delnic tega podjetja, na voljo jih je še {{kolicina1}}.</h2>
 <h3 align = center> Zaradi preprečevanja arbitraže lahko kupite največ {{stevilo_delnic}} delnic tega podjetja.</h3>
 <div align='center'>
-<form action="/uporabnik/{{stanje}}/trgovanje/{{oznaka}}/" method="post" style="width: 30%;margin-top: 5cm">
+<form action="{{ROOT}}/uporabnik/{{stanje}}/trgovanje/{{oznaka}}/" method="post" style="width: 30%;margin-top: 5cm">
 %if napaka == 1:
     <h3>Neveljaven vnos željene količine delnic</h3>
 %end

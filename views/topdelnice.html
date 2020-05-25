@@ -2,22 +2,22 @@
 <html>
 
   <head>
-    <link rel="stylesheet" type="text/css"  href="/static/main.css">
+    <link rel="stylesheet" type="text/css"  href="{{ROOT}}/static/main.css">
     <meta charset='utf8'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <header id='header'>
-      <a class="logo" href='/zacetna_stran/'>Domov</a>
+      <a class="logo" href='{{ROOT}}/zacetna_stran/'>Domov</a>
       <nav>
-        <a href="/borze/">Borze</a>
-        <a href="/sektorji/">Sektorji</a>
-        <a href="/topdelnice/"> Top delnice</a>
+        <a href="{{ROOT}}/borze/">Borze</a>
+        <a href="{{ROOT}}/sektorji/">Sektorji</a>
+        <a href="{{ROOT}}/topdelnice/"> Top delnice</a>
         %if stanje == 0:
-        <a href="/prijava/">Prijava</a>
-        <a href="/registracija/">Registracija</a>
+        <a href="{{ROOT}}/prijava/">Prijava</a>
+        <a href="{{ROOT}}/registracija/">Registracija</a>
         %end 
         %if stanje != 0:
-        <a href="/uporabnik/{{stanje}}/">Moj profil</a>
-        <a href="/odjava/">Odjava</a>
+        <a href="{{ROOT}}/uporabnik/{{stanje}}/">Moj profil</a>
+        <a href="{{ROOT}}/odjava/">Odjava</a>
         %end
       </nav>
       </header>
@@ -46,11 +46,11 @@
     <th>{{oznaka}}</th>
     <th>{{ime}}</th>
     <th>{{cena}}</th>
-    <th><a href="/borze/{{borza}}">{{borza}}</a></th>
-    <th><a href="/sektorji/{{sektor}}">{{sektor}}</a></th>
+    <th><a href="{{ROOT}}/borze/{{borza}}">{{borza}}</a></th>
+    <th><a href="{{ROOT}}/sektorji/{{sektor}}">{{sektor}}</a></th>
     <th>{{kolicina}}</th>
     %if stanje != 0:
-    <th><a href="/uporabnik/{{stanje}}/trgovanje/{{oznaka}}/">Kupi/Prodaj</a></th>
+    <th><a href="{{ROOT}}/uporabnik/{{stanje}}/trgovanje/{{oznaka}}/">Kupi/Prodaj</a></th>
     %end
 </tr>
 %end
