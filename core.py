@@ -484,7 +484,7 @@ def posodobi():
 
 
 
-baza = psycopg2.connect(database=db, host=host, user=user, password=password)
+baza = psycopg2.connect(database=db, host=host, user=user, password=password, port = DB_PORT)
 baza.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
 cur = baza.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
