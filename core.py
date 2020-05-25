@@ -17,8 +17,14 @@ ROOT = os.environ.get('BOTTLE_ROOT', '/')
 DB_PORT = os.environ.get('POSTGRES_PORT', 5432)
 
 
+def rtemplate(*largs, **kwargs):
+    """
+    Izpis predloge s podajanjem spremenljivke ROOT z osnovnim URL-jem.
+    """
+    return template(ROOT=ROOT, *largs, **kwargs)
 
-
+def rredirect(*largs, **kwargs):
+    return redirect(ROOT = ROOT, *largs, **kwargs)
 
 debug(True)
 
@@ -56,18 +62,18 @@ def static(filename):
 @get('/')
 def index():
     stanje = id_uporabnik()
-    return template('zacetna_stran.html', stanje = stanje)
+    return rtemplate('zacetna_stran.html', stanje = stanje)
 
 @get('/zacetna_stran/')
 def zacetna_get():
     stanje = id_uporabnik()
-    return template('zacetna_stran.html', stanje = stanje)
+    return rtemplate('zacetna_stran.html', stanje = stanje)
 
 @get('/borze/')
 def borze():
     stanje = id_uporabnik()
     cur.execute("""SELECT * FROM BORZE""")
-    return template('borze.html', borze=cur, stanje = stanje)
+    return rtemplate('borze.html', borze=cur, stanje = stanje)
 
 @get('/borze/<oznaka>')
 def borza(oznaka):
@@ -76,7 +82,7 @@ def borza(oznaka):
     cur.execute(ukaz,(oznaka, ))
     vrednost= izracun(cur)
     cur.execute(ukaz,(oznaka, ))
-    return template('borze_podrobno.html', delnice=cur, oznaka=oznaka, vrednost=vrednost, stanje = stanje)
+    return rtemplate('borze_podrobno.html', delnice=cur, oznaka=oznaka, vrednost=vrednost, stanje = stanje)
 
 
 
@@ -84,7 +90,7 @@ def borza(oznaka):
 def sektorji():
     stanje = id_uporabnik()
     cur.execute("SELECT id,ime_sektorja,opis FROM SEKTOR")
-    return template('sektorji.html', sektorji=cur, stanje = stanje)
+    return rtemplate('sektorji.html', sektorji=cur, stanje = stanje)
 
 @get('/sektorji/<oznaka>')
 def sektor(oznaka):
@@ -93,26 +99,26 @@ def sektor(oznaka):
     cur.execute(ukaz,(oznaka, ))
     vrednost = izracun(cur)
     cur.execute(ukaz,(oznaka, ))
-    return template('sektor_podrobno.html',sektor=cur,oznaka=oznaka, vrednost=vrednost, stanje = stanje)
+    return rtemplate('sektor_podrobno.html',sektor=cur,oznaka=oznaka, vrednost=vrednost, stanje = stanje)
 
 @get('/topdelnice/')
 def delnice():
     stanje = id_uporabnik()
     cur.execute('SELECT * FROM DELNICE ORDER BY cena DESC LIMIT 20')
-    return template('topdelnice.html', delnice=cur, stanje = stanje)
+    return rtemplate('topdelnice.html', delnice=cur, stanje = stanje)
 
 @get('/odjava/')
 def odjava():
     response.delete_cookie("id", path='/')
-    redirect('/zacetna_stran/')
+    rredirect('/zacetna_stran/')
 
 @get('/prijava/')
 def prijava():
     stanje = id_uporabnik()
     if stanje !=0:
-        redirect('/zacetna_stran/')
+        rredirect('/zacetna_stran/')
     napaka = 0
-    return template('prijava.html', napaka=napaka, stanje = stanje)
+    return rtemplate('prijava.html', napaka=napaka, stanje = stanje)
 
 
 
@@ -155,17 +161,17 @@ def prijavljanje():
             uid = x[0]
         response.set_cookie("id",uid, path='/', secret = kodiranje)
         string = '/uporabnik/{0}/'.format(uid)
-        redirect(string)
+        rredirect(string)
 #        return template('uporabnik.html', id = id, ime = ime, priimek=priimek, drzava = drzava, racun = racun, trans = cur, stanje = stanje)
     else:
-        return template('prijava.html', napaka = 1, stanje = 0)
+        return rtemplate('prijava.html', napaka = 1, stanje = 0)
 
 @get('/registracija/')
 def register():
     stanje = id_uporabnik()
     if stanje !=0:
-        redirect('/zacetna_stran/')
-    return template('registracija.html', stanje = stanje, napaka = 0)
+        rredirect('/zacetna_stran/')
+    return rtemplate('registracija.html', stanje = stanje, napaka = 0)
 
 #def pridobi_podatke(stevilo):
 #    ukaz2 = ("SELECT * FROM UPORABNIK WHERE id = (%s)")
@@ -184,7 +190,7 @@ def register():
 def uporabnik(stanje):
     piskot = id_uporabnik()
     if piskot != int(stanje):
-        redirect('/zacetna_stran/')
+        rredirect('/zacetna_stran/')
 
     ukaz2 = ("SELECT * FROM UPORABNIK WHERE id = (%s)")
     cur.execute(ukaz2,(stanje, ))
@@ -207,7 +213,7 @@ def uporabnik(stanje):
     cur.execute(ukaz5,(racun, ))
     trans_delnice = cur.fetchall()
     stanje = id_uporabnik()
-    return template('uporabnik.html', stanje = stanje, id=a, ime=b, priimek = c, drzava = d, racun  =e, trans=trans, vrednost = vrednost, trans_delnice = trans_delnice)
+    return rtemplate('uporabnik.html', stanje = stanje, id=a, ime=b, priimek = c, drzava = d, racun  =e, trans=trans, vrednost = vrednost, trans_delnice = trans_delnice)
 
 
 
@@ -222,23 +228,23 @@ def registracija():
     geslo1 = request.forms.get('pass1')
     geslo2 = request.forms.get('pass2')
     if ime == '' or priimek == '' or email == '' or drzava == '' or trr == '' or geslo1 == '' or geslo2 == '':
-        return template('registracija.html', stanje= stanje, napaka = 1)
+        return rtemplate('registracija.html', stanje= stanje, napaka = 1)
     string = 'SELECT mail FROM PRIJAVA'
     cur.execute(string)
     for x in cur:
         if x[0] == email:
-            return template('registracija.html', stanje = stanje, napaka = 2)
+            return rtemplate('registracija.html', stanje = stanje, napaka = 2)
         else: 
             continue
     string = 'SELECT racun FROM UPORABNIK'
     cur.execute(string)
     for x in cur:
         if x[0] == trr:
-            return template('registracija.html', stanje = stanje, napaka=3)
+            return rtemplate('registracija.html', stanje = stanje, napaka=3)
         else:
             continue
     if len(geslo1) < 6:
-        return template('registracija.html', stanje = stanje, napaka =5)
+        return rtemplate('registracija.html', stanje = stanje, napaka =5)
     if geslo1 == geslo2:
         cur.execute("SELECT nextval('zaporedje_uporabnik')")
         for x in cur:
@@ -250,9 +256,9 @@ def registracija():
         cur.execute(ukaz_pri, (uid, email, hashGesla(geslo1), ))
         response.set_cookie("id",uid, path='/', secret = kodiranje)
         string = '/uporabnik/{0}/'.format(uid)
-        redirect(string)
+        rredirect(string)
     else:
-        return template('registracija.html', stanje = stanje, napaka = 4)
+        return rtemplate('registracija.html', stanje = stanje, napaka = 4)
 
 
 def doloci_racun(st):
@@ -284,9 +290,9 @@ def denar(stanje):
     print(piskotek)
     print(stanje)
     if piskotek != int(stanje):
-        redirect('/zacetna_stran/')
+        rredirect('/zacetna_stran/')
     vrednost = stanje_racun(stanje)
-    return template('denar.html', vrednost = vrednost, stanje = stanje, napaka = 0)
+    return rtemplate('denar.html', vrednost = vrednost, stanje = stanje, napaka = 0)
 
 @post('/uporabnik/<stanje>/denar/')
 def denarovanje(stanje):
@@ -295,23 +301,23 @@ def denarovanje(stanje):
         dvig = float(request.forms.get('kolicina1'))
         polog = float(request.forms.get('kolicina2'))
         if dvig == 0 and polog == 0 or dvig < 0 or polog < 0:
-            return template('denar.html', vrednost = vrednost, stanje = stanje, napaka = 2)
+            return rtemplate('denar.html', vrednost = vrednost, stanje = stanje, napaka = 2)
     except:
-        return template('denar.html', vrednost = vrednost, stanje = stanje, napaka = 2)
+        return rtemplate('denar.html', vrednost = vrednost, stanje = stanje, napaka = 2)
     dvig = round(dvig,2)
     polog = round(polog,2)
     znesek = polog - dvig
     prob  = float(vrednost) + znesek
     if prob < 0:
-        return template('denar.html', vrednost = vrednost, stanje=stanje, napaka=4, prob = prob)
+        return rtemplate('denar.html', vrednost = vrednost, stanje=stanje, napaka=4, prob = prob)
     geslo = request.forms.get('geslo')
     if not preveri_geslo(stanje, geslo):
-        return template('denar.html', vrednost = vrednost, stanje = stanje, napaka = 1)
+        return rtemplate('denar.html', vrednost = vrednost, stanje = stanje, napaka = 1)
     cur.execute("SELECT nextval('trans_id')")
     trid = cur.fetchone()
     ukaz = ('INSERT INTO TRANSAKCIJE(id,znesek,uporabnik,tip) VALUES ((%s), (%s), (%s), 0)')
     cur.execute(ukaz, (trid[0], znesek, doloci_racun(stanje)))
-    redirect ('/uporabnik/{0}/'.format(stanje))
+    rredirect ('/uporabnik/{0}/'.format(stanje))
 
 def vredost_delnic(st):
     ukaz = ("SELECT oznaka, sum(kolicina) FROM TRANSAKCIJE WHERE uporabnik = (%s) AND tip = 1 GROUP BY oznaka")
@@ -332,14 +338,14 @@ def pregled_delnic(stanje):
     print(piskotek)
     print(stanje)
     if piskotek != int(stanje):
-        redirect('/zacetna_stran/')
+        rredirect('/zacetna_stran/')
     ukaz = ("SELECT oznaka, sum(kolicina) FROM TRANSAKCIJE WHERE uporabnik = (%s) AND tip = 1 GROUP BY oznaka")
     racun = doloci_racun(stanje)
     cur.execute(ukaz, (racun, ))
     delnice = cur.fetchall()
     vrednost_portfelja = vredost_delnic(stanje)
     cur.execute("SELECT * FROM DELNICE ORDER BY oznaka ASC")
-    return template('delnice.html', stanje = stanje, delnice = delnice, vrednost_portfelja = vrednost_portfelja, vse = cur)
+    return rtemplate('delnice.html', stanje = stanje, delnice = delnice, vrednost_portfelja = vrednost_portfelja, vse = cur)
 
 
 
@@ -361,7 +367,7 @@ def nova_cena_prodaja(kolicina_prodaje, kolicina_vseh):
 def trgovanje(stanje, oznaka):
     piskotek = id_uporabnik()
     if piskotek != int(stanje):
-        redirect('/zacetna_stran/')
+        rredirect('/zacetna_stran/')
     ukaz =("SELECT cena,kolicina,ime FROM DELNICE where oznaka = (%s)")
     cur.execute(ukaz,(oznaka, ))
     podatek = cur.fetchone()
@@ -377,7 +383,7 @@ def trgovanje(stanje, oznaka):
         lastna_kolicina = podatek[0]
     except:
         lastna_kolicina = 0
-    return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 0, stevilo_delnic = stevilo_delnic)
+    return rtemplate('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 0, stevilo_delnic = stevilo_delnic)
 
      
 
@@ -410,20 +416,20 @@ def trg(stanje, oznaka):
         prodajna_kolicina = -kolicina2
     except:
         print('napaka trya')
-        return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
+        return rtemplate('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
     if kolicina1 < 0 or kolicina2 < 0:
-        return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
+        return rtemplate('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
 
     if kolicina1 == 0 and kolicina2 == 0:
         print('obe sta 0')
-        return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
+        return rtemplate('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1)
 
     if kolicina1 != 0 and kolicina2 != 0:
         print('obe nista 0')
-        return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 3)
+        return rtemplate('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 3)
 
     if not preveri_geslo(stanje,geslo):
-        return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 2)
+        return rtemplate('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 2)
 
     
 
@@ -439,16 +445,16 @@ def trg(stanje, oznaka):
         nova_cena = round(float(cena) * float(nova_cena_prodaja(kolicina2,kolicina_na_voljo)),2)
         cur.execute(ukaz,(nova_cena, oznaka, ))
         string = '/uporabnik/{0}/'.format(stanje)
-        redirect(string)
+        rredirect(string)
 
     if kolicina1 == 0 and lastna_kolicina + prodajna_kolicina < 0:
         print('napaka z vsoto')
-        return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1, stevilo_delnic=stevilo_delnic)
+        return rtemplate('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1, stevilo_delnic=stevilo_delnic)
     
     if kolicina2 == 0 and kolicina_na_voljo - kolicina1 >= 0 and kolicina1 <= stevilo_delnic:
         if float(stanje_na_racunu) - float(cena)*float(kolicina1) < 0:
             print('napaka z denarjem')
-            return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1, stevilo_delnic=stevilo_delnic)
+            return rtemplate('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1, stevilo_delnic=stevilo_delnic)
 
         cur.execute("SELECT nextval('trans_id')")
         trid = cur.fetchone()
@@ -461,12 +467,12 @@ def trg(stanje, oznaka):
         nova_cena = round(float(cena) * float(nova_cena_nakup(kolicina1,kolicina_na_voljo)),2)
         cur.execute(ukaz,(nova_cena, oznaka, ))
         string = '/uporabnik/{0}/'.format(stanje)
-        redirect(string)
+        rredirect(string)
     if kolicina2 == 0 and kolicina_na_voljo - kolicina1 < 0:
         print('zadnja napaka')
-        return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1, stevilo_delnic=stevilo_delnic)
+        return rtemplate('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1, stevilo_delnic=stevilo_delnic)
     else:
-        return template('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1, stevilo_delnic=stevilo_delnic)
+        return rtemplate('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1, stevilo_delnic=stevilo_delnic)
 
 @post('/posodobi/')
 def posodobi():
@@ -480,7 +486,7 @@ def posodobi():
         x = cur.fetchone()
         cena = round(float(x[0]) * sprememba,2)
         cur.execute("UPDATE delnice SET cena = (%s) WHERE oznaka = (%s)", (cena, oznaka[0], ))
-    redirect('/uporabnik/69/')
+    rredirect('/uporabnik/69/')
 
 
 
