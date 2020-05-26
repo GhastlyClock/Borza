@@ -109,7 +109,7 @@ def delnice():
 @get('/odjava/')
 def odjava():
     response.delete_cookie("id", path='/')
-    redirect('/zacetna_stran/')
+    redirect('//zacetna_stran/')
 
 @get('/prijava/')
 def prijava():
