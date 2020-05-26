@@ -2,22 +2,22 @@
 <html>
 
   <head>
-    <link rel="stylesheet" type="text/css"  href="{{ROOT}}/static/main.css">
+    <link rel="stylesheet" type="text/css"  href="{{ROOT}}static/main.css">
     <meta charset='utf8'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <header id='header'>
-      <a class="logo" href='{{ROOT}}/zacetna_stran/'>Domov</a>
+      <a class="logo" href='{{ROOT}}zacetna_stran/'>Domov</a>
       <nav>
-        <a href="{{ROOT}}/borze/">Borze</a>
-        <a href="{{ROOT}}/sektorji/">Sektorji</a>
-        <a href="{{ROOT}}/topdelnice/"> Top delnice</a>
+        <a href="{{ROOT}}borze/">Borze</a>
+        <a href="{{ROOT}}sektorji/">Sektorji</a>
+        <a href="{{ROOT}}topdelnice/"> Top delnice</a>
         %if stanje == 0:
-        <a href="{{ROOT}}/prijava/">Prijava</a>
-        <a href="{{ROOT}}/registracija/">Registracija</a>
+        <a href="{{ROOT}}prijava/">Prijava</a>
+        <a href="{{ROOT}}registracija/">Registracija</a>
         %end 
         %if stanje != 0:
-        <a href="{{ROOT}}/uporabnik/{{stanje}}/">Moj profil</a>
-        <a href="{{ROOT}}/odjava/">Odjava</a>
+        <a href="{{ROOT}}uporabnik/{{stanje}}/">Moj profil</a>
+        <a href="{{ROOT}}odjava/">Odjava</a>
         %end
       </nav>
       </header>
@@ -31,7 +31,7 @@
   <header>
       <h3>
         <b>
-          <a href="{{ROOT}}/uporabnik/{{stanje}}/denar/" > S klikom naložite ali dvignite denar</a>
+          <a href="{{ROOT}}uporabnik/{{stanje}}/denar/" > S klikom naložite ali dvignite denar</a>
         </b>
       </h3>
   </header>
@@ -40,7 +40,7 @@
   <header>
   <h3> 
     <b>
-      <a href="{{ROOT}}/uporabnik/{{stanje}}/trgovanje/">Trgujte z delnicami</a> 
+      <a href="{{ROOT}}uporabnik/{{stanje}}/trgovanje/">Trgujte z delnicami</a> 
     </b>
   </h3>
   </header>

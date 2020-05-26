@@ -2,22 +2,22 @@
 <html>
 
   <head>
-    <link rel="stylesheet" type="text/css"  href="{{ROOT}}/static/main.css">
+    <link rel="stylesheet" type="text/css"  href="{{ROOT}}static/main.css">
     <meta charset='utf8'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <header id='header'>
-      <a class="logo" href='{{ROOT}}/zacetna_stran/'>Domov</a>
+      <a class="logo" href='{{ROOT}}zacetna_stran/'>Domov</a>
       <nav>
-        <a href="{{ROOT}}/borze/">Borze</a>
-        <a href="{{ROOT}}/sektorji/">Sektorji</a>
-        <a href="{{ROOT}}/topdelnice/"> Top delnice</a>
+        <a href="{{ROOT}}borze/">Borze</a>
+        <a href="{{ROOT}}sektorji/">Sektorji</a>
+        <a href="{{ROOT}}topdelnice/"> Top delnice</a>
         %if stanje == 0:
-        <a href="{{ROOT}}/prijava/">Prijava</a>
-        <a href="{{ROOT}}/registracija/">Registracija</a>
+        <a href="{{ROOT}}prijava/">Prijava</a>
+        <a href="{{ROOT}}registracija/">Registracija</a>
         %end 
         %if stanje != 0:
-        <a href="{{ROOT}}/uporabnik/{{stanje}}/">Moj profil</a>
-        <a href="{{ROOT}}/odjava/">Odjava</a>
+        <a href="{{ROOT}}uporabnik/{{stanje}}/">Moj profil</a>
+        <a href="{{ROOT}}odjava/">Odjava</a>
         %end
       </nav>
       </header>
@@ -25,7 +25,7 @@
     </head>
 
     <body>
-      <link rel="stylesheet" type="text/css"  href="/static/main.css">
+
 <table cellpadding="0" cellspacing="0" border="1">
 <tr>
     <th>Oznaka</th>
@@ -34,7 +34,7 @@
 </tr>
 % for oznaka, ime, regija, in borze:
 <tr>
-    <th><a href="{{ROOT}}/borze/{{oznaka}}">{{oznaka}}</th>
+    <th><a href="{{ROOT}}borze/{{oznaka}}">{{oznaka}}</th>
     <th>{{ime}}</th>
     <th>{{regija}}</th>
 </tr>

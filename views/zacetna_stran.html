@@ -2,22 +2,22 @@
 <html>
 
   <head>
-    <link rel="stylesheet" type="text/css"  href="{{ROOT}}/static/main.css">
+    <link rel="stylesheet" type="text/css"  href="{{ROOT}}static/main.css">
     <meta charset='utf8'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <header id='header'>
-      <a class="logo" href='{{ROOT}}/zacetna_stran/'>Domov</a>
+      <a class="logo" href='{{ROOT}}zacetna_stran/'>Domov</a>
       <nav>
-        <a href="{{ROOT}}/borze/">Borze</a>
-        <a href="{{ROOT}}/sektorji/">Sektorji</a>
-        <a href="{{ROOT}}/topdelnice/"> Top delnice</a>
+        <a href="{{ROOT}}borze/">Borze</a>
+        <a href="{{ROOT}}sektorji/">Sektorji</a>
+        <a href="{{ROOT}}topdelnice/"> Top delnice</a>
         %if stanje == 0:
-        <a href="{{ROOT}}/prijava/">Prijava</a>
-        <a href="{{ROOT}}/registracija/">Registracija</a>
+        <a href="{{ROOT}}prijava/">Prijava</a>
+        <a href="{{ROOT}}registracija/">Registracija</a>
         %end 
         %if stanje != 0:
-        <a href="{{ROOT}}/uporabnik/{{stanje}}/">Moj profil</a>
-        <a href="{{ROOT}}/odjava/">Odjava</a>
+        <a href="{{ROOT}}uporabnik/{{stanje}}/">Moj profil</a>
+        <a href="{{ROOT}}odjava/">Odjava</a>
         %end
       </nav>
       </header>
@@ -25,7 +25,7 @@
     </head>
 
     <body>
-      <link rel="stylesheet" type="text/css"  href="/static/main.css">
+
 
 
 <section id="banner">
@@ -33,7 +33,7 @@
     <h1>Zelo dobra borza</h1>
     <p>Naša borza je zelo dobra in vsi ki tu trgujejo, zaslužijo veliko denarja. <br /> 
       Če pa se najde kdo, ki je izgubil vse, je pa to njegova osebna krivda.</p>
-    <a href='{{ROOT}}/registracija/'><button>Odpri račun</button></a>
+    <a href='{{ROOT}}registracija/'><button>Odpri račun</button></a>
 </div>
 
     </body>

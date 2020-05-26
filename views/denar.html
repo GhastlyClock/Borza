@@ -2,22 +2,22 @@
 <html>
 
   <head>
-    <link rel="stylesheet" type="text/css"  href="{{ROOT}}/static/main.css">
+    <link rel="stylesheet" type="text/css"  href="{{ROOT}}static/main.css">
     <meta charset='utf8'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <header id='header'>
-      <a class="logo" href='{{ROOT}}/zacetna_stran/'>Domov</a>
+      <a class="logo" href='{{ROOT}}zacetna_stran/'>Domov</a>
       <nav>
-        <a href="{{ROOT}}/borze/">Borze</a>
-        <a href="{{ROOT}}/sektorji/">Sektorji</a>
-        <a href="{{ROOT}}/topdelnice/"> Top delnice</a>
+        <a href="{{ROOT}}borze/">Borze</a>
+        <a href="{{ROOT}}sektorji/">Sektorji</a>
+        <a href="{{ROOT}}topdelnice/"> Top delnice</a>
         %if stanje == 0:
-        <a href="{{ROOT}}/prijava/">Prijava</a>
-        <a href="{{ROOT}}/registracija/">Registracija</a>
+        <a href="{{ROOT}}prijava/">Prijava</a>
+        <a href="{{ROOT}}registracija/">Registracija</a>
         %end 
         %if stanje != 0:
-        <a href="{{ROOT}}/uporabnik/{{stanje}}/">Moj profil</a>
-        <a href="{{ROOT}}/odjava/">Odjava</a>
+        <a href="{{ROOT}}uporabnik/{{stanje}}/">Moj profil</a>
+        <a href="{{ROOT}}odjava/">Odjava</a>
         %end
       </nav>
       </header>
@@ -33,7 +33,7 @@
 %end
 <div  align="center">
 
-<form action="{{ROOT}}/uporabnik/{{stanje}}/denar/" class="form text-center" method="POST" style="width: 30%;margin-top: 5cm">
+<form action="{{ROOT}}uporabnik/{{stanje}}/denar/" class="form text-center" method="POST" style="width: 30%;margin-top: 5cm">
     <span>Količina dviga</span>
     <br>
     <input name='kolicina1' type='integer' value = '0'/> EUR
