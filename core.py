@@ -159,7 +159,7 @@ def prijavljanje():
         for x in cur:
             uid = x[0]
         response.set_cookie("id",uid, path='/', secret = kodiranje)
-        string = '/uporabnik/{0}/'.format(uid)
+        string = '//uporabnik/{0}/'.format(uid)
         redirect(string)
 #        return template('uporabnik.html', id = id, ime = ime, priimek=priimek, drzava = drzava, racun = racun, trans = cur, stanje = stanje)
     else:
