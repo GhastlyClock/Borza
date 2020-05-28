@@ -69,7 +69,7 @@
 <tr>
   <th> ID </th>
   <th> Znesek </th>
-%for id,znesek,uporabnik,oznaka,kolicina,tip in trans:
+%for id,znesek,uporabnik in trans:
 <tr>
 <th>{{id}}</th>
 <th>{{znesek}} EUR</th>
@@ -88,14 +88,14 @@
 <tr>
   <th> Oznaka delnice </th>
   <th> Kolicina </th>
-  <th> Znesek </th>
+
 </tr>
 
-%for id,znesek,uporabnik,oznaka,kolicina,tip in trans_delnice:
+%for id,uporabnik,oznaka,kolicina in trans_delnice:
 <tr>
   <th> {{oznaka}} </th>
   <th> {{kolicina}} </th>
-  <th> {{znesek}} EUR</th>
+
 </tr>
 %end
 %end

@@ -34,17 +34,21 @@
 <div  align="center">
 
 <form action="{{ROOT}}uporabnik/{{stanje}}/denar/" class="form text-center" method="POST" style="width: 30%;margin-top: 5cm">
-    <span>Količina dviga</span>
+    <span>Količina</span>
     <br>
     <input name='kolicina1' type='integer' value = '0'/> EUR
     <br>
-  <span> Količina pologa</span>
-  <br>
-  <input name='kolicina2' type='integer' value = '0' /> EUR
-  <br>
   %if napaka == 1:
   <h5> Geslo ni pravilo </h5>
   %end
+  <br>
+  <input type='radio' name='vrsta' value='dvig' id = 'vrsta'>
+  <label for="vrsta">Dvig</label>
+
+  <input type='radio' name='vrsta' value='polog' id = 'vrsta2'>
+  <label for="vrsta2">Polog</label>
+
+  <br>
   <span>Geslo:</span>
   <input name='geslo' type='password' />
   <input type='submit'  value='Potrdi'/>

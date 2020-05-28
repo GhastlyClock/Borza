@@ -38,22 +38,21 @@
 
     
     <div class="h3 mb-3 font-weight-normal">
-    <span>Število delnic, ki jih želite kupiti</span>
+    <span>Število delnic</span>
     <br>
-    <input name='kolicina1' type='integer' value = '0'/> 
+    <input name='kolicina' type='integer' value = '0'/> 
     <br>
     
-    
-
-
-<span>Število delnic, ki jih želite prodati</span>
 <br>
-<input name='kolicina2' type='integer' value = '0' /> 
 <br>
-
 %if napaka == 2:
 <h5> Geslo ni pravilo </h5>
 %end
+<input type='radio' name='vrsta' value='nakup' id = 'vrsta'>
+<label for="vrsta">Nakup</label>
+<input type='radio' name='vrsta' value='prodaja' id = 'vrsta2'>
+<label for="vrsta2">Prodaja</label>
+<br>
 <span>Geslo:</span>
 <input name='geslo' type='password' />
 <input type='submit'  value='Potrdi'/>
