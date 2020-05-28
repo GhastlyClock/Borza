@@ -194,7 +194,7 @@ def uporabnik(stanje):
     
     for x in cur.fetchall():
         vre = x[0]
-        print(vre)
+  
     try: vrednost = round(float(vre),2)
     except: vrednost = 0
 
@@ -203,13 +203,13 @@ def uporabnik(stanje):
     ukaz3 = ("SELECT * FROM denar_transakcije where uporabnik = (%s) ORDER BY id DESC LIMIT 20")
     cur.execute(ukaz3,(stanje, ))
     trans = cur.fetchall()
-    print(trans)
+
     ukaz5 = ("SELECT * FROM delnice_transakcije WHERE uporabnik = (%s) ORDER BY id DESC LIMIT 20")
     cur.execute(ukaz5,(stanje, ))
     trans_delnice = cur.fetchall()
-    print(trans_delnice)
+
     stanje = id_uporabnik()
-    return rtemplate('uporabnik.html', stanje = stanje, id=a, ime=b, priimek = c, drzava = d, racun  =e, trans=trans, vrednost = vrednost, trans_delnice = trans_delnice)
+    return rtemplate('uporabnik.html', stanje = stanje, id=a, ime=b, priimek = c, drzava = d, trans=trans, vrednost = vrednost, trans_delnice = trans_delnice)
 
 
 
@@ -231,16 +231,16 @@ def registracija():
 
     if ime == '' or priimek == '' or email == '' or drzava == '' or trr == '' or geslo1 == '' or geslo2 == '':
         return rtemplate('registracija.html', stanje= stanje, napaka = 1, **podatki)
-    string = ('SELECT * FROM novi_uporabniki where mail = (%s)')
-    cur.execute(string,(email, ))
-    if cur.fetchone() != None:
-        return rtemplate('registracija.html', stanje = stanje, napaka = 2, **podatki)
 
-    string = ('SELECT * FROM novi_uporabniki where racun = (%s)')
-    cur.execute(string, (trr, ))
-    if cur.fetchone() != None:
-        return rtemplate('registracija.html', stanje = stanje, napaka=3, **podatki)
-        
+    string = ('SELECT racun,mail FROM novi_uporabniki where racun = (%s) or mail = (%s)')
+    cur.execute(string, (trr, email,  ))
+    ujemanje = cur.fetchone()
+    if ujemanje != None:
+        if ujemanje[0] == trr:
+            return rtemplate('registracija.html', stanje = stanje, napaka=3, **podatki)
+        else:
+            return rtemplate('registracija.html', stanje = stanje, napaka = 2, **podatki)
+
     if len(geslo1) < 6:
         return rtemplate('registracija.html', stanje = stanje, napaka =5, **podatki)
     if geslo1 == geslo2:
