@@ -32,7 +32,7 @@ kodiranje = 'laqwXUtKfHTp1SSpnkSg7VbsJtCgYS89QnvE7PedkXqbE8pPj7VeRUwqdXu1Fr1kEkM
 def id_uporabnik():
     if request.get_cookie("id", secret = kodiranje):
         piskotek = request.get_cookie("id", secret = kodiranje)
-        return int(piskotek) 
+        return piskotek
     else:
         return 0
 
@@ -170,19 +170,9 @@ def register():
     stanje = id_uporabnik()
     if stanje !=0:
         redirect('{0}zacetna_stran/'.format(ROOT))
-    return rtemplate('registracija.html', stanje = stanje, napaka = 0)
-
-#def pridobi_podatke(stevilo):
-#    ukaz2 = ("SELECT * FROM UPORABNIK WHERE id = (%s)")
-#        cur.execute(ukaz2,(stevilo, ))
-#        for a,b,c,d,e in cur:
-#            id = a
-#            ime = b
-#            priimek = c
-#            drzava = d
-#            racun = e
-#    ukaz3 = ("SELECT * FROM TRANSAKCIJE WHERE uporabnik = (%s)")
-#    cur.execute(ukaz3,(racun, ))
+    polja_registracija = ("ime", "priimek", "mail", "drzava", "trr", "pass1", "pass2")
+    podatki = {polje: "" for polje in polja_registracija}
+    return rtemplate('registracija.html', stanje=stanje, napaka=0, **podatki)
     
 
 @get('/uporabnik/<stanje>/')
@@ -226,46 +216,45 @@ def uporabnik(stanje):
 @post('/registracija/')
 def registracija():
     stanje = id_uporabnik()
-    ime = request.forms.ime
-    priimek = request.forms.priimek
-    email = request.forms.mail
-    drzava = request.forms.drzava
-    trr = request.forms.trr
-    geslo1 = request.forms.pass1
-    geslo2 = request.forms.pass2
+
+    polja_registracija = ("ime", "priimek", "mail", "drzava", "trr", "pass1", "pass2")
+    podatki = {polje: "" for polje in polja_registracija}
+    podatki = {polje: getattr(request.forms, polje) for polje in polja_registracija}
+
+    ime = podatki.get('ime')
+    priimek = podatki.get('priimek')
+    email = podatki.get('mail')
+    drzava = podatki.get('drzava')
+    trr = podatki.get('trr')
+    geslo1 = podatki.get('pass1')
+    geslo2 = podatki.get('pass2')
+
     if ime == '' or priimek == '' or email == '' or drzava == '' or trr == '' or geslo1 == '' or geslo2 == '':
-        return rtemplate('registracija.html', stanje= stanje, napaka = 1)
-    string = 'SELECT mail FROM novi_uporabniki'
-    cur.execute(string)
-    for x in cur:
-        if x[0] == email:
-            return rtemplate('registracija.html', stanje = stanje, napaka = 2)
-        else: 
-            continue
-    string = 'SELECT racun FROM novi_uporabniki'
-    cur.execute(string)
-    for x in cur:
-        if x[0] == trr:
-            return rtemplate('registracija.html', stanje = stanje, napaka=3)
-        else:
-            continue
-    if len(geslo1) < 6:
-        return rtemplate('registracija.html', stanje = stanje, napaka =5)
-    if geslo1 == geslo2:
-        cur.execute("SELECT nextval('zaporedje_uporabnik')")
-        for x in cur:
-            uid = x[0]
+        return rtemplate('registracija.html', stanje= stanje, napaka = 1, **podatki)
+    string = ('SELECT * FROM novi_uporabniki where mail = (%s)')
+    cur.execute(string,(email, ))
+    if cur.fetchone() != None:
+        return rtemplate('registracija.html', stanje = stanje, napaka = 2, **podatki)
 
-        ukaz = ("INSERT INTO novi_uporabniki(id,ime,priimek,drzava,racun,mail,geslo) VALUES((%s), (%s), (%s), (%s), (%s),(%s), (%s))")
-        cur.execute(ukaz,(uid, ime, priimek, drzava, trr, email,hashGesla(geslo1), ))
-
+    string = ('SELECT * FROM novi_uporabniki where racun = (%s)')
+    cur.execute(string, (trr, ))
+    if cur.fetchone() != None:
+        return rtemplate('registracija.html', stanje = stanje, napaka=3, **podatki)
         
-   
+    if len(geslo1) < 6:
+        return rtemplate('registracija.html', stanje = stanje, napaka =5, **podatki)
+    if geslo1 == geslo2:
+        podatki["geslo"] = hashGesla(podatki["pass1"])
+        ukaz = """INSERT INTO novi_uporabniki (ime,priimek,drzava,racun,mail,geslo)
+                  VALUES((%(ime)s), (%(priimek)s), (%(drzava)s), (%(trr)s), (%(mail)s),(%(geslo)s))
+                  RETURNING id"""
+        cur.execute(ukaz, podatki)
+        uid = cur.fetchone()[0]
         response.set_cookie("id",uid, path='/', secret = kodiranje)
-        string = '{0}/uporabnik/{1}/'.format(ROOT,uid)
+        string = '{0}uporabnik/{1}/'.format(ROOT,uid)
         redirect(string)
     else:
-        return rtemplate('registracija.html', stanje = stanje, napaka = 4)
+        return rtemplate('registracija.html', stanje = stanje, napaka = 4, **podatki)
 
 
 def doloci_racun(st):
@@ -392,8 +381,9 @@ def trgovanje(stanje, oznaka):
     try:
         cur.execute(ukaz,(stanje, oznaka ))
         podatek = cur.fetchone()
-        print(podatek)
         lastna_kolicina = podatek[0]
+        if lastna_kolicina == None:
+            lastna_kolicina = 0
         
     except:
         lastna_kolicina = 0
@@ -429,7 +419,7 @@ def trg(stanje, oznaka):
         return rtemplate('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1, stevilo_delnic = stevilo_delnic)
     
     if not preveri_geslo(stanje,geslo):
-        rtemplate('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 2, stevilo_delnic = stevilo_delnic)
+        return rtemplate('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 2, stevilo_delnic = stevilo_delnic)
 
     if vrsta == 'nakup':
         if kolicina > stevilo_delnic:

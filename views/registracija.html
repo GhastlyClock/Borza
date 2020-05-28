@@ -1,48 +1,22 @@
-<!DOCTYPE html>
-<html>
-
-  <head>
-    <link rel="stylesheet" type="text/css"  href="{{ROOT}}static/main.css">
-    <meta charset='utf8'>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <header id='header'>
-      <a class="logo" href='{{ROOT}}zacetna_stran/'>Domov</a>
-      <nav>
-        <a href="{{ROOT}}borze/">Borze</a>
-        <a href="{{ROOT}}sektorji/">Sektorji</a>
-        <a href="{{ROOT}}topdelnice/"> Top delnice</a>
-        %if stanje == 0:
-        <a href="{{ROOT}}prijava/">Prijava</a>
-        <a href="{{ROOT}}registracija/">Registracija</a>
-        %end 
-        %if stanje != 0:
-        <a href="{{ROOT}}uporabnik/{{stanje}}/">Moj profil</a>
-        <a href="{{ROOT}}odjava/">Odjava</a>
-        %end
-      </nav>
-      </header>
-    </div>
-    </head>
-
-    <body>
+%rebase('base.html', stanje=stanje, ROOT=ROOT)
  
 <div align="center">
 <h1> Še danes začnite s trgovanjem in začnite živeti življenje, kot si ga zaslužite.</h1>
 <form action='{{ROOT}}registracija/' class="form-signin text-center" method='post' style="width: 30%;margin-top: 5cm">
     <div class="h3 mb-3 font-weight-normal">
-    <span>Ime:</span><input name='ime' type='text' />
+    <span>Ime:</span><input name='ime' type='text' value='{{ime}}'/>
     <br>
-    <span>Priimek:</span><input name='priimek' type='text' />
+    <span>Priimek:</span><input name='priimek' type='text' value='{{priimek}}'/>
     <br>
-    <span>Elektronski naslov:</span><input name='mail' type='text' />
+    <span>Elektronski naslov:</span><input name='mail' type='text' value='{{mail}}'/>
     <br>
     %if napaka == 2:
     <h2> Uporabnik s tem elektronskim naslovom je že registriran. </h2>
     %end
     <br>
-    <span>Država:</span><input name='drzava' type='text' />
+    <span>Država:</span><input name='drzava' type='text' value='{{drzava}}'/>
     <br>
-    <span>Številka trgovalnega računa:</span><input name='trr' type='text' />
+    <span>Številka trgovalnega računa:</span><input name='trr' type='text' value='{{trr}}' />
     <br>
     %if napaka == 3:
     <h2> Uporabnik s tem trgovalnim računom je že registriran. <h2>
@@ -66,20 +40,3 @@
     </div> 
 </form>
 </div>
-    </body>
-
-
-
-<footer id = "footer">
-  <div class="inner">
-    <div class="content">
-      <section align = center> <h3>W. Feather:</h3>
-      <h5>Buy stocks as you would groceries: <br /> when they are on sale </h5></section>
-      <section align = center> <h3>W. Buffet</h3>
-      <h5>Risk comes from not knowing what you're doing</h5></section>
-      <section align = center> <h3>C. Munger</h3>
-      <h5>If people weren't wrong so often, we would't be so rich</h5> </section>
-    </div>
-  </div>
-</footer>
-</html>

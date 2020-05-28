@@ -1,30 +1,5 @@
-<!DOCTYPE html>
-<html>
+%rebase('base.html', stanje=stanje, ROOT=ROOT)
 
-  <head>
-    <link rel="stylesheet" type="text/css"  href="{{ROOT}}static/main.css">
-    <meta charset='utf8'>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <header id='header'>
-      <a class="logo" href='{{ROOT}}zacetna_stran/'>Domov</a>
-      <nav>
-        <a href="{{ROOT}}borze/">Borze</a>
-        <a href="{{ROOT}}sektorji/">Sektorji</a>
-        <a href="{{ROOT}}topdelnice/"> Top delnice</a>
-        %if stanje == 0:
-        <a href="{{ROOT}}prijava/">Prijava</a>
-        <a href="{{ROOT}}registracija/">Registracija</a>
-        %end 
-        %if stanje != 0:
-        <a href="{{ROOT}}uporabnik/{{stanje}}/">Moj profil</a>
-        <a href="{{ROOT}}odjava/">Odjava</a>
-        %end
-      </nav>
-      </header>
-    </div>
-    </head>
-
-    <body>
 
 
 
@@ -36,19 +11,5 @@
     <a href='{{ROOT}}registracija/'><button>Odpri račun</button></a>
 </div>
 
-    </body>
-
 </section>
-<footer id = "footer">
-  <div class="inner">
-    <div class="content">
-      <section align = center> <h3>W. Feather:</h3>
-      <h5>Buy stocks as you would groceries: <br /> when they are on sale </h5></section>
-      <section align = center> <h3>W. Buffet</h3>
-      <h5>Risk comes from not knowing what you're doing</h5></section>
-      <section align = center> <h3>C. Munger</h3>
-      <h5>If people weren't wrong so often, we would't be so rich</h5> </section>
-    </div>
-  </div>
-</footer>
-</html>
+
