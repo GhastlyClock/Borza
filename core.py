@@ -417,7 +417,9 @@ def trg(stanje, oznaka):
     except:
 
         return rtemplate('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1, stevilo_delnic = stevilo_delnic)
-    
+    if kolicina <= 0:
+        return rtemplate('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1, stevilo_delnic = stevilo_delnic)
+
     if not preveri_geslo(stanje,geslo):
         return rtemplate('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 2, stevilo_delnic = stevilo_delnic)
 
