@@ -1,31 +1,6 @@
-<!DOCTYPE html>
-<html>
+%rebase('base.html', stanje=stanje, ROOT=ROOT)
 
-  <head>
-    <link rel="stylesheet" type="text/css"  href="/static/main.css">
-    <meta charset='utf8'>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <header id='header'>
-      <a class="logo" href='/zacetna_stran/'>Domov</a>
-      <nav>
-        <a href="/borze/">Borze</a>
-        <a href="/sektorji/">Sektorji</a>
-        <a href="/topdelnice/"> Top delnice</a>
-        %if stanje == 0:
-        <a href="/prijava/">Prijava</a>
-        <a href="/registracija/">Registracija</a>
-        %end 
-        %if stanje != 0:
-        <a href="/uporabnik/{{stanje}}/">Moj profil</a>
-        <a href="/odjava/">Odjava</a>
-        %end
-      </nav>
-      </header>
-    </div>
-    </head>
 
-    <body>
-      <link rel="stylesheet" type="text/css"  href="/static/main.css">
 
 <h1>Vse delnice, ki so na iz sektorja {{oznaka}}:
 <table cellpadding="0" cellspacing="0" border="1">
@@ -36,7 +11,7 @@
     <th>Borza</th>
     <th>Količina</th>
     %if stanje != 0:
-    <th> Kupi ali prodaj delnico </th>
+    <th> Kupi ali prodaj delnice </th>
     %end
 </tr>
 %for oznaka, ime, cena, borza, kolicina in sektor:
@@ -44,27 +19,12 @@
     <th>{{oznaka}}</th>
     <th>{{ime}}</th>
     <th>{{cena}}</th>
-    <th><a href="/borze/{{borza}}">{{borza}}</a></th>
+    <th><a href="{{ROOT}}borze/{{borza}}">{{borza}}</a></th>
     <th>{{kolicina}}</th>
     %if stanje != 0:
-    <th><a href="/uporabnik/{{stanje}}/trgovanje/{{oznaka}}/">Kupi/Prodaj</a></th>
+    <th><a href="{{ROOT}}uporabnik/{{stanje}}/trgovanje/{{oznaka}}/">Kupi/Prodaj</a></th>
     %end
 </tr>
 %end
 </table>
 <h1> Skupna vrednost vseh delnic v tem sektorju je {{vrednost}} EUR.</h1>
-    </body>
-
-<footer id = "footer">
-  <div class="inner">
-    <div class="content">
-    <section> <h3>M. Gandhi:</h3>
-    <h5>Stonks go up and down </h5></section>
-    <section> <h3>A. Einstein</h3>
-    <h5>Don't be an idiot, put all money into stonks.</h5></section>
-    <section> <h3>Everyone before 2008</h3>
-    <h5>Housing market can not fail, are you crazy?</h5> </section>
-    </div>
-  </div>
-</footer>
-</hmtl>

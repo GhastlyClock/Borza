@@ -1,51 +1,25 @@
-<!DOCTYPE html>
-<html>
-
-  <head>
-    <link rel="stylesheet" type="text/css"  href="/static/main.css">
-    <meta charset='utf8'>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <header id='header'>
-      <a class="logo" href='/zacetna_stran/'>Domov</a>
-      <nav>
-        <a href="/borze/">Borze</a>
-        <a href="/sektorji/">Sektorji</a>
-        <a href="/topdelnice/"> Top delnice</a>
-        %if stanje == 0:
-        <a href="/prijava/">Prijava</a>
-        <a href="/registracija/">Registracija</a>
-        %end 
-        %if stanje != 0:
-        <a href="/uporabnik/{{stanje}}/">Moj profil</a>
-        <a href="/odjava/">Odjava</a>
-        %end
-      </nav>
-      </header>
-    </div>
-    </head>
-
-    <body>
-      <link rel="stylesheet" type="text/css"  href="/static/main.css">
+%rebase('base.html', stanje=stanje, ROOT=ROOT)
+ 
 <div align="center">
-<h1> Še danes se pridružite buržoaziji in v enem tednu začnite živeti življenje, kot si ga zaslužite.</h1>
-<form action='/registracija/' class="form-signin text-center" method='post' style="width: 30%;margin-top: 5cm">
+<h1> Še danes začnite s trgovanjem in začnite živeti življenje, kot si ga zaslužite.</h1>
+<form action='{{ROOT}}registracija/' class="form-signin text-center" method='post' style="width: 30%;margin-top: 5cm">
     <div class="h3 mb-3 font-weight-normal">
-    <span>Ime:</span><input name='ime' type='text' />
+    <span>Ime:</span><input name='ime' type='text' value='{{ime}}'/>
     <br>
-    <span>Priimek:</span><input name='priimek' type='text' />
+    <span>Priimek:</span><input name='priimek' type='text' value='{{priimek}}'/>
     <br>
-    <span>Elektronski naslov:</span><input name='mail' type='text' />
+    <span>Elektronski naslov:</span><input name='mail' type='text' value='{{mail}}'/>
     <br>
     %if napaka == 2:
     <h2> Uporabnik s tem elektronskim naslovom je že registriran. </h2>
     %end
     <br>
-    <span>Država:</span><input name='drzava' type='text' />
+    <span>Država:</span><input name='drzava' type='text' value='{{drzava}}'/>
     <br>
-    <span>Številka trgovalnega računa:</span><input name='trr' type='text' />
+    <span>Številka trgovalnega računa:</span><input name='trr' type='text' value='{{trr}}' />
     <br>
     %if napaka == 3:
-    <h2> Uporabnik s tem trgovalnim računom je že registriran.<h2>
+    <h2> Uporabnik s tem trgovalnim računom je že registriran. <h2>
     %end
     <br>
     <span>Geslo:</span><input name='pass1' type='password' />
@@ -66,20 +40,3 @@
     </div> 
 </form>
 </div>
-    </body>
-
-
-
-<footer id = "footer">
-  <div class="inner">
-    <div class="content">
-    <section> <h3>M. Gandhi:</h3>
-    <h5>Stonks go up and down </h5></section>
-    <section> <h3>A. Einstein</h3>
-    <h5>Don't be an idiot, put all money into stonks.</h5></section>
-    <section> <h3>Everyone before 2008</h3>
-    <h5>Housing market can not fail, are you crazy?</h5> </section>
-    </div>
-  </div>
-</footer>
-</html>

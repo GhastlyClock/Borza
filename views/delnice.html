@@ -1,41 +1,16 @@
-<!DOCTYPE html>
-<html>
-
-  <head>
-    <link rel="stylesheet" type="text/css"  href="/static/main.css">
-    <meta charset='utf8'>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <header id='header'>
-      <a class="logo" href='/zacetna_stran/'>Domov</a>
-      <nav>
-        <a href="/borze/">Borze</a>
-        <a href="/sektorji/">Sektorji</a>
-        <a href="/topdelnice/"> Top delnice</a>
-        %if stanje == 0:
-        <a href="/prijava/">Prijava</a>
-        <a href="/registracija/">Registracija</a>
-        %end 
-        %if stanje != 0:
-        <a href="/uporabnik/{{stanje}}/">Moj profil</a>
-        <a href="/odjava/">Odjava</a>
-        %end
-      </nav>
-      </header>
-    </div>
-    </head>
-<body>
+%rebase('base.html', stanje=stanje, ROOT=ROOT)
 <h1> V lasti imate naslednje delnice:</h1>
 <table>
     <tr>
         <th> Oznaka </th>
         <th> Kolicina</th>
-        <th> Prodaj/Kupi </th>
+        <th> Kupi/Prodaj </th>
     <tr>
 %for oznaka,kolicina in delnice:
 <tr>
     <th>{{oznaka}}</th>
     <th>{{kolicina}}</th>
-    <th><a href="/uporabnik/{{stanje}}/trgovanje/{{oznaka}}/">Kupi/Prodaj<a></th>
+    <th><a href="{{ROOT}}uporabnik/{{stanje}}/trgovanje/{{oznaka}}/">Kupi/Prodaj<a></th>
 %end
 </table>
 <h4> Te delnice so skupno vredne {{vrednost_portfelja}} EUR.</h4>
@@ -48,32 +23,19 @@
     <th>Borza</th>
     <th>Sektor</th>
     <th>Kolicina</th>
-    <th>Izvedi nakup/prodajo</th>
+    <th>Kupi/Prodaj</th>
   </tr>
 %for oznaka,ime,cena,borza,sektor,kolicina in vse:
   <tr>
     <th>{{oznaka}}</th>
     <th>{{ime}}</th>
     <th>{{cena}} EUR</th>
-    <th><a href="/borze/{{borza}}">{{borza}}</a></th>
-    <th><a href="/sektorji/{{sektor}}">{{sektor}}</a></th>
+    <th><a href="{{ROOT}}borze/{{borza}}">{{borza}}</a></th>
+    <th><a href="{{ROOT}}sektorji/{{sektor}}">{{sektor}}</a></th>
     <th>{{kolicina}}</th>
-    <th><a href="/uporabnik/{{stanje}}/trgovanje/{{oznaka}}/">Kupi/Prodaj</a></th>
+    <th><a href="{{ROOT}}uporabnik/{{stanje}}/trgovanje/{{oznaka}}/">Kupi/Prodaj</a></th>
   </tr>
 %end
 </table>
-</body>
 
-<footer id = "footer">
-  <div class="inner">
-    <div class="content">
-    <section> <h3>M. Gandhi:</h3>
-    <h5>Stonks go up and down </h5></section>
-    <section> <h3>A. Einstein</h3>
-    <h5>Don't be an idiot, put all money into stonks.</h5></section>
-    <section> <h3>Everyone before 2008</h3>
-    <h5>Housing market can not fail, are you crazy?</h5> </section>
-    </div>
-  </div>
-</footer>
-</html>
+

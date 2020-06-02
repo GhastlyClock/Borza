@@ -2,35 +2,138 @@
 <html>
 
   <head>
-    <link rel="stylesheet" type="text/css"  href="/static/main.css">
+    <link rel="stylesheet" type="text/css"  href="{{ROOT}}static/main.css">
     <meta charset='utf8'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <header id='header'>
-      <a class="logo" href='/zacetna_stran/'>Domov</a>
+      <a class="logo" href='{{ROOT}}zacetna_stran/'>Domov</a>
       <nav>
-        <a href="/borze/">Borze</a>
-        <a href="/sektorji/">Sektorji</a>
-        <a href="/topdelnice/"> Top delnice</a>
+        <a href="{{ROOT}}borze/">Borze</a>
+        <a href="{{ROOT}}sektorji/">Sektorji</a>
+        <a href="{{ROOT}}topdelnice/"> Top delnice</a>
         %if stanje == 0:
-        <a href="/prijava/">Prijava</a>
-        <a href="/registracija/">Registracija</a>
+        <a href="{{ROOT}}prijava/">Prijava</a>
+        <a href="{{ROOT}}registracija/">Registracija</a>
         %end 
         %if stanje != 0:
-        <a href="/uporabnik/{{stanje}}">Moj profil</a>
-        <a href="/odjava/">Odjava</a>
+        <a href="{{ROOT}}uporabnik/{{stanje}}/">Moj profil</a>
+        <a href="{{ROOT}}odjava/">Odjava</a>
         %end
       </nav>
       </header>
     </div>
     </head>
+<body>
+{{!base}}
+</body>
+
+<section class="wrapper">
+  <div class="inner">
+    <header class="special">
+      <h2>Pridružite se uspešnim vlagateljem</h2>
+      <p>Začnite trgovati z delnicami še danes na najboljši borzi z najmanjšimi trgovalnimi stroški</p>
+    </header>
+    <div class="highlights">
+      <section>
+        <div class="content">
+          <header>
+            <a href="#" class="icon fa-vcard-o"><span class="label">Icon</span></a>
+            <h3>Varen račun</h3>
+          </header>
+          <p>Na zelo dobri borzi skrbimo, da so vaši podatki skrbno varovani in vaš kapital na varnem.</p>
+        </div>
+      </section>
+      <section>
+        <div class="content">
+          <header>
+            <a href="#" class="icon fa-files-o"><span class="label">Icon</span></a>
+            <h3>Trgujte z mednarodnimi delnicami</h3>
+          </header>
+          <p>Na naši borzi ponujamo številne delnice iz vseh največjih svetovnih trgov.</p>
+        </div>
+      </section>
+      <section>
+        <div class="content">
+          <header>
+            <a href="#" class="icon fa-floppy-o"><span class="label">Icon</span></a>
+            <h3>Najnižji trgovalni stroški</h3>
+          </header>
+          <p>Nudimo najnižje stroške nakupa in prodaje delnic, brez skritih stroškov uporabe Zelo dobre borze.</p>
+        </div>
+      </section>
+    </div>
+  </section>
+
 
 <footer id = "footer">
+  <div class="testimonials">
+    <section>
+      <div class="content">
+        <blockquote>
+          <p>S pomočjo Zelo dobre borze sem končno postal milijonar!</p>
+        </blockquote>
+        <div class="author">
+          <p class="credit">- <strong>Jane Doe</strong> <span>CEO - ABC Inc.</span></p>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="content">
+        <blockquote>
+          <p>S trgovanjem na Zelo dobri borzi sem lahko zapustil svojo prejšnjo službo 
+            in končno začel potovati po svetu in zaživel brez finančnih skrbi!</p>
+        </blockquote>
+        <div class="author">
+          <p class="credit">- <strong>John Doe</strong> <span>CEO - ABC Inc.</span></p>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="content">
+        <blockquote>
+          <p>Zelo dobra borza mi je pomagala, da sem končno zaživel svoje sanjsko življenje.</p>
+        </blockquote>
+        <div class="author">
+          <p class="credit">- <strong>Janet Smith</strong> <span>CEO - ABC Inc.</span></p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+
+<footer id="footer">
   <div class="inner">
     <div class="content">
-    <section> Random1</section>
-    <section> random2</section>
-    <section> ranom3 </section>
+      <section>
+        <h3>Omejitev odgovornosti</h3>
+        <p>Nahajate se na spletnem portalu ZELO DOBRE BORZE D.O.O.. Vaš dostop do tega spletnega portala in njegovo 
+          uporabo urejajo ta splošna pravila kot tudi nekateri zakoni. Z vstopom na spletni portal potrjujete,
+           da ste s temi splošnimi pogoji seznanjeni, da z njimi soglašate, ter da vas določbe teh splošnih pogojev
+           zavezujejo.
+           Spletno mesto in domena www.zelodobraborza.si je bilo postavljeno z namenom obveščanja širše
+           javnosti o podjetju ter njegovih storitvah in v nobenem primeru ne predstavlja nasveta, ponudbe 
+           ali priporočila. 
+           </p>
+      </section>
+      <section>
+        <h4>PRIDRUŽI SE USPEŠNIM VLAGATELJEM</h4>
+        <ul class="alt">
+          <li><a href="{{ROOT}}registracija/">Registracija</a></li>
+          <li><a href="{{ROOT}}borze/">Borze</a></li>
+          <li><a href="{{ROOT}}sektorji/">Sektorji</a></li>
+          <li><a href="{{ROOT}}topdelnice/">Top delnice</a></li>
+        </ul>
+      </section>
+      <section>
+        <h4>KONTAKT</h4>
+        <ul class="plain">
+          <li><a href="#"><i class="icon fa-twitter">&nbsp;</i>070 81 81 91</a></li>
+          <li><a href="#"><i class="icon fa-facebook">&nbsp;</i>info@zelodobraborza.si</a></li>
+        </ul>
+      </section>
     </div>
   </div>
 </footer>
+
 </html>
+

@@ -1,34 +1,8 @@
-<!DOCTYPE html>
-<html>
-
-  <head>
-    <link rel="stylesheet" type="text/css"  href="/static/main.css">
-    <meta charset='utf8'>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <header id='header'>
-      <a class="logo" href='/zacetna_stran/'>Domov</a>
-      <nav>
-        <a href="/borze/">Borze</a>
-        <a href="/sektorji/">Sektorji</a>
-        <a href="/topdelnice/"> Top delnice</a>
-        %if stanje == 0:
-        <a href="/prijava/">Prijava</a>
-        <a href="/registracija/">Registracija</a>
-        %end 
-        %if stanje != 0:
-        <a href="/uporabnik/{{stanje}}/">Moj profil</a>
-        <a href="/odjava/">Odjava</a>
-        %end
-      </nav>
-      </header>
-    </div>
-    </head>
-
-    <body>
-      <link rel="stylesheet" type="text/css"  href="/static/main.css">
+%rebase('base.html', stanje=stanje, ROOT=ROOT)
+ 
 
 <div align="center">
-<form action='/prijava/' class="form-signin text-center" method='post' style="width: 30%;margin-top: 5cm">
+<form action='{{ROOT}}prijava/' class="form-signin text-center" method='post' style="width: 30%;margin-top: 5cm">
     <div class="h3 mb-3 font-weight-normal">
     <span>Elektronski naslov:</span><input name='mail' type='text' />
     <br>
@@ -37,23 +11,7 @@
     <input value='Prijava' type='submit' />
     </div>
     %if napaka == 1:
-    <h3> Napačen elektronski naslov ali geslo, poiskusite še enkrat</h3>
+    <h3> <b>Napačen elektronski naslov ali geslo, poiskusite še enkrat</b></h3>
     %end    
 </form>
 </div>
-    </body>
-
-
-<footer id = "footer">
-  <div class="inner">
-    <div class="content">
-    <section> <h3>M. Gandhi:</h3>
-    <h5>Stonks go up and down </h5></section>
-    <section> <h3>A. Einstein</h3>
-    <h5>Don't be an idiot, put all money into stonks.</h5></section>
-    <section> <h3>Everyone before 2008</h3>
-    <h5>Housing market can not fail, are you crazy?</h5> </section>
-    </div>
-  </div>
-</footer>
-</html>

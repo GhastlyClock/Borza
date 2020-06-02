@@ -1,5 +1,7 @@
 # Borza
 
+[![bottle.py](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jan248/Borza/master?urlpath=proxy/8080/) 
+
 V našem projektu bomo naredili podatkovno bazo za virtualno borzo skupaj z spletno aplikacijo. 
 Na borzo se prijavi uporabnik, ki je lahko navadni vlagatelj ali pa je tudi nadzornik. 
 Vlagatelj si lahko na tekoči račun nakaže denar, s katerim nakupuje na borzi. 
@@ -18,3 +20,6 @@ Uporabnik, ki ima zamrznjeni račun ne more opraviti nobene transakcije na splet
 
 
 ![Er diagram](ERdiagram.png)
+
+
+

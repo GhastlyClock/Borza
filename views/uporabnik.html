@@ -1,41 +1,23 @@
-<!DOCTYPE html>
-<html>
+%rebase('base.html', stanje=stanje, ROOT=ROOT)
 
-  <head>
-    <link rel="stylesheet" type="text/css"  href="/static/main.css">
-    <meta charset='utf8'>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <header id='header'>
-      <a class="logo" href='/zacetna_stran/'>Domov</a>
-      <nav>
-        <a href="/borze/">Borze</a>
-        <a href="/sektorji/">Sektorji</a>
-        <a href="/topdelnice/"> Top delnice</a>
-        %if stanje == 0:
-        <a href="/prijava/">Prijava</a>
-        <a href="/registracija/">Registracija</a>
-        %end 
-        %if stanje != 0:
-        <a href="/uporabnik/{{stanje}}/">Moj profil</a>
-        <a href="/odjava/">Odjava</a>
-        %end
-      </nav>
-      </header>
-    </div>
-    </head>
-
-    <body>
-      <link rel="stylesheet" type="text/css"  href="/static/main.css">
 <h1>Pozdravljeni {{ime}} {{priimek}}.</h1>
 <div class="highlights">
   <div class="content">
   <header>
-  <h3><a href="/uporabnik/{{stanje}}/denar/" >S klikom naložite ali dvignite denar</a> </h3>
+      <h3>
+        <b>
+          <a href="{{ROOT}}uporabnik/{{stanje}}/denar/" > S klikom naložite ali dvignite denar</a>
+        </b>
+      </h3>
   </header>
   </div>
   <div class="content">
   <header>
-  <h3><a href="/uporabnik/{{stanje}}/trgovanje/">Trgujte z delnicami</a> </h3>
+  <h3> 
+    <b>
+      <a href="{{ROOT}}uporabnik/{{stanje}}/trgovanje/">Trgujte z delnicami</a> 
+    </b>
+  </h3>
   </header>
   </div>
   
@@ -57,12 +39,12 @@
 %if trans != []:
 <h2> Vaše stanje na računu je {{vrednost}} EUR</h2>
 <div align="left">
-<h5> Vaše transakcije na računu </h5>
+<h4> Vaše transakcije na računu </h4>
 <table>
 <tr>
   <th> ID </th>
   <th> Znesek </th>
-%for id,znesek,uporabnik,oznaka,kolicina,tip in trans:
+%for id,znesek,uporabnik in trans:
 <tr>
 <th>{{id}}</th>
 <th>{{znesek}} EUR</th>
@@ -76,38 +58,21 @@
 %end
 %if trans_delnice != []:
 <div align="left">
-<h5> Vaše operacije z delnicami </h5>
+<h4> Vaše operacije z delnicami </h4>
 <table>
 <tr>
   <th> Oznaka delnice </th>
   <th> Kolicina </th>
-  <th> Znesek </th>
+
 </tr>
 
-%for id,znesek,uporabnik,oznaka,kolicina,tip in trans_delnice:
+%for id,uporabnik,oznaka,kolicina in trans_delnice:
 <tr>
-  <th> {{oznaka}} </th>
+  <th><a href="{{ROOT}}uporabnik/{{stanje}}/trgovanje/{{oznaka}}/"> {{oznaka}} </a></th>
   <th> {{kolicina}} </th>
-  <th> {{znesek}} EUR</th>
 </tr>
 %end
 %end
 </table>
 </div>
 
-</body>
-
-
-<footer id = "footer">
-  <div class="inner">
-    <div class="content">
-    <section> <h3>M. Gandhi:</h3>
-    <h5>Stonks go up and down </h5></section>
-    <section> <h3>A. Einstein</h3>
-    <h5>Don't be an idiot, put all money into stonks.</h5></section>
-    <section> <h3>Everyone before 2008</h3>
-    <h5>Housing market can not fail, are you crazy?</h5> </section>
-    </div>
-  </div>
-</footer>
-</html>

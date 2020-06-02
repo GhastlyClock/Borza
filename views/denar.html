@@ -1,30 +1,6 @@
-<!DOCTYPE html>
-<html>
+%rebase('base.html', stanje=stanje, ROOT=ROOT)
 
-  <head>
-    <link rel="stylesheet" type="text/css"  href="/static/main.css">
-    <meta charset='utf8'>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <header id='header'>
-      <a class="logo" href='/zacetna_stran/'>Domov</a>
-      <nav>
-        <a href="/borze/">Borze</a>
-        <a href="/sektorji/">Sektorji</a>
-        <a href="/topdelnice/"> Top delnice</a>
-        %if stanje == 0:
-        <a href="/prijava/">Prijava</a>
-        <a href="/registracija/">Registracija</a>
-        %end 
-        %if stanje != 0:
-        <a href="/uporabnik/{{stanje}}/">Moj profil</a>
-        <a href="/odjava/">Odjava</a>
-        %end
-      </nav>
-      </header>
-    </div>
-    </head>
-<body>
-<h4> Trenutno stanje na računu je {{vrednost}} EUR </h4>
+<h3> Trenutno stanje na računu je {{vrednost}} EUR </h3>
 % if napaka == 2:
     <h3> Izpolnite vsaj en obrazec v ustrezni obliki </h3>
 %end
@@ -33,18 +9,22 @@
 %end
 <div  align="center">
 
-<form action="/uporabnik/{{stanje}}/denar/" class="form text-center" method="POST" style="width: 30%;margin-top: 5cm">
-    <span>Količina dviga</span>
+<form action="{{ROOT}}uporabnik/{{stanje}}/denar/" class="form text-center" method="POST" style="width: 30%;margin-top: 5cm">
+    <span>Količina</span>
     <br>
     <input name='kolicina1' type='integer' value = '0'/> EUR
     <br>
-  <span> Količina pologa</span>
-  <br>
-  <input name='kolicina2' type='integer' value = '0' /> EUR
-  <br>
   %if napaka == 1:
   <h5> Geslo ni pravilo </h5>
   %end
+  <br>
+  <input type='radio' name='vrsta' value='dvig' id = 'vrsta' checked>
+  <label for="vrsta">Dvig</label>
+
+  <input type='radio' name='vrsta' value='polog' id = 'vrsta2'>
+  <label for="vrsta2">Polog</label>
+
+  <br>
   <span>Geslo:</span>
   <input name='geslo' type='password' />
   <input type='submit'  value='Potrdi'/>
@@ -57,18 +37,3 @@
 
 
 
-</body>
-
-<footer id = "footer">
-  <div class="inner">
-    <div class="content">
-    <section> <h3>M. Gandhi:</h3>
-    <h5>Stonks go up and down </h5></section>
-    <section> <h3>A. Einstein</h3>
-    <h5>Don't be an idiot, put all money into stonks.</h5></section>
-    <section> <h3>Everyone before 2008</h3>
-    <h5>Housing market can not fail, are you crazy?</h5> </section>
-    </div>
-  </div>
-</footer>
-</html>
