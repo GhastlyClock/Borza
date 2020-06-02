@@ -415,7 +415,6 @@ def trg(stanje, oznaka):
         geslo = request.forms.geslo
         vrsta = request.forms.vrsta
     except:
-
         return rtemplate('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1, stevilo_delnic = stevilo_delnic)
     if kolicina <= 0:
         return rtemplate('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 1, stevilo_delnic = stevilo_delnic)
