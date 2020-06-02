@@ -1,4 +1,5 @@
 db = 'sem2020_zank'
 host = 'baza.fmf.uni-lj.si'
 user = 'javnost'
-password = 'javnogeslo'
+password = 'javnogeslo'user = 'zank'
+password = '678eti18'
