@@ -66,6 +66,7 @@ def index():
     stanje = id_uporabnik()
     return rtemplate('zacetna_stran.html', stanje = stanje)
 
+#z get dobimo zacetno stran naše borze
 @get('/zacetna_stran/')
 def zacetna_get():
     stanje = id_uporabnik()
