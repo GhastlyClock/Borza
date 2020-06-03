@@ -299,6 +299,7 @@ def denar(stanje):
     vrednost = stanje_racun(stanje)
     return rtemplate('denar.html', vrednost = vrednost, stanje = stanje, napaka = 0)
 
+#definiramo funkcije za polog in dvig denarja pri posamezniku
 @post('/uporabnik/<stanje>/denar/')
 def denarovanje(stanje):
     vrednost = stanje_racun(stanje)
