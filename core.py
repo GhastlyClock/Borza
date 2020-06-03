@@ -360,7 +360,7 @@ def pregled_delnic(stanje):
     cur.execute("SELECT * FROM DELNICE ORDER BY oznaka ASC")
     return rtemplate('delnice.html', stanje = stanje, delnice = delnice, vrednost_portfelja = vrednost_portfelja, vse = cur)
 
-
+#naredimo dve funkciji za cene delnic, da se te njihove cene spreminjajo glede na trgovanje na borzi
 
 def nova_cena_nakup(kolicina_nakupa, kolicina_vseh):
     if kolicina_nakupa > 0 and kolicina_vseh > 0:
