@@ -333,7 +333,7 @@ def denarovanje(stanje):
         cur.execute(ukaz, (trid[0], -kolicina, stanje, ))
         redirect ('{0}uporabnik/{1}/'.format(ROOT,stanje))
 
-
+#funkcija za izračun vrednosti delnic pri nakupu ali prodaji
 def vredost_delnic(st):
     ukaz = ("SELECT oznaka, sum(kolicina) FROM delnice_transakcije WHERE uporabnik = (%s) GROUP BY oznaka")
     vrednost = 0
