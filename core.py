@@ -55,6 +55,7 @@ def izracun(cur):
         stevec += kolicina*cena 
     return stevec
 
+#določimo pot
 @route("/static/<filename:path>")
 def static(filename):
     return static_file(filename, root=static_dir)
