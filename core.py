@@ -60,6 +60,7 @@ def izracun(cur):
 def static(filename):
     return static_file(filename, root=static_dir)
 
+#z get dobimo indeks uporabnika
 @get('/')
 def index():
     stanje = id_uporabnik()
