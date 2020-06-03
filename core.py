@@ -106,12 +106,14 @@ def sektor(oznaka):
     cur.execute(ukaz,(oznaka, ))
     return rtemplate('sektor_podrobno.html',sektor=cur,oznaka=oznaka, vrednost=vrednost, stanje = stanje)
 
+#naredimo top delnice tako, da jih uredimo glede na njihove cene
 @get('/topdelnice/')
 def delnice():
     stanje = id_uporabnik()
     cur.execute('SELECT * FROM DELNICE ORDER BY cena DESC LIMIT 20')
     return rtemplate('topdelnice.html', delnice=cur, stanje = stanje)
 
+#za odjavo pobrišemo piškotek
 @get('/odjava/')
 def odjava():
     response.delete_cookie("id", path='/')
