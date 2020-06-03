@@ -222,7 +222,7 @@ def uporabnik(stanje):
     return rtemplate('uporabnik.html', stanje = stanje, id=a, ime=b, priimek = c, drzava = d, trans=trans, vrednost = vrednost, trans_delnice = trans_delnice)
 
 
-
+#naredimo registracijo, ki vsebuje ime, priimek, mail, državo, trr in geslo
 @post('/registracija/')
 def registracija():
     stanje = id_uporabnik()
