@@ -129,7 +129,7 @@ def prijava():
     return rtemplate('prijava.html', napaka=napaka, stanje = stanje)
 
 
-
+#preverimo geslo s hashom
 def preveri_uporabnika(ime,geslo):
     ukaz = ("SELECT geslo FROM novi_uporabniki WHERE mail = (%s)")
     cur.execute(ukaz,(ime, ))
