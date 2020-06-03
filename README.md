@@ -1,19 +1,13 @@
-# Borza
+﻿# Borza
 
 [![bottle.py](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jan248/Borza/master?urlpath=proxy/8080/) 
 
-V našem projektu bomo naredili podatkovno bazo za virtualno borzo skupaj z spletno aplikacijo. 
-Na borzo se prijavi uporabnik, ki je lahko navadni vlagatelj ali pa je tudi nadzornik. 
-Vlagatelj si lahko na tekoči račun nakaže denar, s katerim nakupuje na borzi. 
+V našem projektu smo naredili podatkovno bazo za virtualno borzo skupaj s spletno aplikacijo.
+Na našo borzo se mora posameznik registrirati, da se kasneje lahko prijavi. Posameznik si na svoj trgovalni račun nakaže sredstva s katerimi lahko nato kupuje ali prodaja delnice.
 
-Ob nakupu delnic se mu poveča stanje na trgovalnem računu, ki predstavlja vrednost delnic, ki jih ima v lasti.
-Ob prodaji delnic, ki jih ima uporabnik v lasti, se poveča stanje na tekočem računu in to stanje lahko uporabnik dvigne iz borze nazaj v svoj žep.
-Delnice so opremljene z več lastnostmi, po katerih bo potencialni kupec lahko iskal najprimernejšo delnico za njegovo naložbo.
-
-Če je uporabnik tudi nadzornik, ima vpogled v 'sumljive' transakcije ostalih uporabnikov in jim lahko zamrzne uporabniški račun.
-Uporabnik, ki ima zamrznjeni račun ne more opraviti nobene transakcije na spletni strani.
-
-
+Na borzi je veliko podjetij s svojimi delnicami. Podjetja imajo različno količino izdanih delnic. Delnice podjetij iz iste panoge predstavljajo isti sektor, ki si ga lahko tudi ogledamo in primerjamo delnice med sabo v določeni panogi.
+Naredili smo tudi kategorijo 'top delnice', ki zajema najdražje delnice na naši borzi. Vemo, da vrednosti delnic niso konstantene, torej se spreminjajo glede na delovanje posameznikov na trgu. Ob nakupih delnic se njihova cena poviša glede na naključno podano konstanto za to delnico. 
+Z namenom zagotavljanja poštene borze noben vlagatelj v eni transakciji ne more kupiti več kot en odstotek delnic celotnega podjetja.
 
 
 
