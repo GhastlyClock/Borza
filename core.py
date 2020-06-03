@@ -266,7 +266,7 @@ def registracija():
     else:
         return rtemplate('registracija.html', stanje = stanje, napaka = 4, **podatki)
 
-
+#definiramo funkcije, ki nam podajo podatke iz tabel
 def doloci_racun(st):
     ukaz2 = ("SELECT racun FROM UPORABNIK WHERE id = (%s)")
     cur.execute(ukaz2,(st, ))
