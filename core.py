@@ -72,6 +72,7 @@ def zacetna_get():
     stanje = id_uporabnik()
     return rtemplate('zacetna_stran.html', stanje = stanje)
 
+#izvozimo vse borze in naredimo html
 @get('/borze/')
 def borze():
     stanje = id_uporabnik()
