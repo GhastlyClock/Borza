@@ -29,6 +29,7 @@ debug(True)
 
 kodiranje = 'laqwXUtKfHTp1SSpnkSg7VbsJtCgYS89QnvE7PedkXqbE8pPj7VeRUwqdXu1Fr1kEkMzZQAaBR93PoGWks11alfe8y3CPSKh3mEQ'
 
+#funkcija za piškotke
 def id_uporabnik():
     if request.get_cookie("id", secret = kodiranje):
         piskotek = request.get_cookie("id", secret = kodiranje)
