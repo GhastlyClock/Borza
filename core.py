@@ -401,7 +401,7 @@ def trgovanje(stanje, oznaka):
     return rtemplate('operacija.html', stanje = stanje, cena = cena, kolicina1 = kolicina_na_voljo, kolicina2 = lastna_kolicina, ime = ime, oznaka = oznaka, napaka = 0, stevilo_delnic = stevilo_delnic)
 
      
-
+#funkcija za trgovanje na borzi
 @post('/uporabnik/<stanje>/trgovanje/<oznaka>/')
 def trg(stanje, oznaka):
     stanje_na_racunu = stanje_racun(stanje)
