@@ -157,6 +157,7 @@ def hashGesla(s):
     m.update(s.encode("utf-8"))
     return m.hexdigest()
 
+#s postom pišemo na html in dodamo prijavo
 @post('/prijava/')
 def prijavljanje():
     ime = request.forms.mail
