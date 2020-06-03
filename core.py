@@ -61,6 +61,7 @@ def static(filename):
     return static_file(filename, root=static_dir)
 
 #z get dobimo indeks uporabnika
+#z get dobimo vse podatke o delnicah, borzah, sektorjih in naredimo html
 @get('/')
 def index():
     stanje = id_uporabnik()
