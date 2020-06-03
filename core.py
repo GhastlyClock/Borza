@@ -290,7 +290,7 @@ def stanje_racun(stanje):
     except: vrednost = 0
     
     return vrednost
-
+#dobimo podatke o stanju denarja pri posamezniku
 @get('/uporabnik/<stanje>/denar/')
 def denar(stanje):
     piskotek = id_uporabnik()
