@@ -119,6 +119,7 @@ def odjava():
     response.delete_cookie("id", path='/')
     redirect('{0}zacetna_stran/'.format(ROOT))
 
+#če napišemo napačno ime nas vrže na začetno stran
 @get('/prijava/')
 def prijava():
     stanje = id_uporabnik()
