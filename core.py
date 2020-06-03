@@ -480,7 +480,7 @@ def trg(stanje, oznaka):
 
         string = '{0}uporabnik/{1}/'.format(ROOT,stanje)
         redirect(string)
-
+#s to funkcijo posodobimo cene delnic glede na trgovanje z njimi
 @post('/posodobi/')
 def posodobi():
     if id_uporabnik() != 69:
